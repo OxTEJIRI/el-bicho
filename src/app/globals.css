@@ -24,7 +24,7 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; background: var(--bg); color: var(--ink); }
+html, body { margin: 0; background: var(--bg); color: var(--ink); overflow-x: hidden; }
 body { font-family: var(--font-inter), system-ui, sans-serif; transition: background .3s, color .3s; -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
@@ -61,7 +61,7 @@ button { font: inherit; color: inherit; }
 .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--on-accent); animation: blink 1.2s steps(2) infinite; }
 @keyframes blink { 50% { opacity: .25; } }
 .digits { display: flex; align-items: flex-end; gap: 8px; margin-top: 12px; }
-.digit { width: 84px; height: 116px; border-radius: 14px; background: var(--digit); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 104px; line-height: 1; color: var(--accent); position: relative; overflow: hidden; }
+.digit { width: clamp(60px, 21vw, 84px); height: clamp(84px, 29vw, 116px); border-radius: 14px; background: var(--digit); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: clamp(74px, 26vw, 104px); line-height: 1; color: var(--accent); position: relative; overflow: hidden; }
 .digit::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--line); }
 .slots { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 14px; max-width: 640px; }
 .slot { height: 32px; border-radius: 8px; border: 1.5px dashed var(--line); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--sub); }
