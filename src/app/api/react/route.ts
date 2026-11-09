@@ -4,6 +4,7 @@ import { fanNamespace, recall, remember } from '@/lib/memory';
 import { tasteFrom } from '@/lib/taste';
 
 export const runtime = 'nodejs';
+export const maxDuration = 60;
 
 const REACTIONS = ['Unreal', 'SIUUU', 'Tears', 'Remember'];
 

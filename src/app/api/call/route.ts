@@ -3,6 +3,7 @@ import { latestCheckpoint } from '@/lib/sui';
 import { fanNamespace, remember } from '@/lib/memory';
 
 export const runtime = 'nodejs';
+export const maxDuration = 60;
 
 const SCORE = ['Yes', 'No'];
 const HOW = ['Header', 'Left foot', 'Right foot', 'Penalty', 'Free kick'];
