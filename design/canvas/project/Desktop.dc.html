@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>El Bicho desktop home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{opacity:.88}
+@keyframes eb-pulse{0%{box-shadow:0 0 0 0 var(--eb-a)}70%{box-shadow:0 0 0 12px rgba(0,0,0,0)}100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}}
+@keyframes eb-blink{50%{opacity:.25}}
+@keyframes eb-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes eb-pop{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
+.eb-next{animation:eb-pulse 1.8s ease-out infinite}
+.eb-dot{animation:eb-blink 1.2s steps(2) infinite}
+.eb-marquee{animation:eb-marquee 30s linear infinite}
+.eb-pop{animation:eb-pop .35s ease-out}
+</style>
+</helmet>
+<div style="--eb-a: {{t.accent}}; min-height: 1900px; background: {{t.bg}}; color: {{t.ink}}; font-family: Inter, system-ui, sans-serif; transition: background .3s">
+
+  <header style="max-width: 1360px; margin: 0 auto; padding: 20px 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 20px">
+    <div style="font-family: Anton, Impact, sans-serif; font-size: 32px; letter-spacing: 2px">EL BICHO</div>
+    <nav style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1">
+      <a href="#" style="text-decoration: none; font-weight: 800; font-size: 15px; padding: 10px 16px; border-radius: 999px; background: {{t.card}}; border: 1px solid {{t.line}}">Home</a>
+      <a href="#" style="text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 16px; color: {{t.sub}}">Relive</a>
+      <a href="DesktopRoad.dc.html" style="text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 16px; color: {{t.sub}}">Road to 1,000</a>
+      <a href="#" style="text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 16px; color: {{t.sub}}">Ask El Bicho</a>
+      <a href="#" style="text-decoration: none; font-weight: 600; font-size: 15px; padding: 10px 16px; color: {{t.sub}}">1,000 Wall</a>
+    </nav>
+    <div style="display: flex; gap: 4px; background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 999px; padding: 5px" role="group" aria-label="Kit theme">
+      <sc-for list="{{themes}}" as="th" hint-placeholder-count="3">
+        <button onClick="{{th.pick}}" aria-pressed="{{th.on}}" style="display: flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 14px 0 6px; border-radius: 999px; border: {{th.ring}}; background: {{th.bg}}; color: {{t.ink}}; font: 700 13px Inter, sans-serif; cursor: pointer">
+          <span style="width: 24px; height: 24px; border-radius: 50%; background: {{th.swatch}}; border: 1px solid {{t.line}}"></span>{{th.label}}
+        </button>
+      </sc-for>
+    </div>
+    <a href="#" style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: {{t.accent}}; color: {{t.onAccent}}; font-weight: 800; font-size: 15px; border-radius: 999px; padding: 12px 20px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg>Call it</a>
+    <a href="#" aria-label="Your profile" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid {{t.accent}}; background: {{t.card}}; display: flex; align-items: center; justify-content: center; font: 800 14px Inter, sans-serif; text-decoration: none">TJ</a>
+  </header>
+
+  <div style="max-width: 1360px; margin: 0 auto; padding: 0 40px 18px; display: flex; gap: 18px; overflow: hidden">
+    <sc-for list="{{stories}}" as="s" hint-placeholder-count="6">
+      <a href="#" style="flex: none; display: flex; align-items: center; gap: 10px; text-decoration: none; padding: 6px 16px 6px 6px; border-radius: 999px; background: {{t.card}}; border: 1px solid {{t.line}}">
+        <span style="width: 50px; height: 50px; border-radius: 50%; padding: 2px; border: 2.5px solid {{s.ring}}; box-sizing: border-box; display: flex">
+          <span style="flex: 1; border-radius: 50%; background: {{s.bg}}; color: {{s.ink}}; display: flex; align-items: center; justify-content: center; font-family: Anton, Impact, sans-serif; font-size: 13px">{{s.mark}}</span>
+        </span>
+        <span style="font-size: 14px; font-weight: 700; white-space: nowrap">{{s.label}}</span>
+      </a>
+    </sc-for>
+  </div>
+
+  <section style="max-width: 1360px; margin: 0 auto; padding: 0 40px">
+    <div style="position: relative; overflow: hidden; border-radius: 36px; min-height: 620px; background: {{t.tint}}; display: flex; flex-wrap: wrap">
+      <img src="{{t.photo}}" alt="Cristiano Ronaldo in the {{t.kit}} shirt" style="position: absolute; top: 0; right: 0; width: 60%; height: 100%; object-fit: cover; object-position: {{t.pos}}; filter: {{t.filter}}; mix-blend-mode: {{t.blend}}">
+      <div style="position: absolute; right: 2%; top: -40px; font-family: Anton, Impact, sans-serif; font-size: 640px; line-height: .85; color: transparent; -webkit-text-stroke: 3px {{t.stroke}}" aria-hidden="true">7</div>
+      <div style="position: absolute; inset: 0; background: {{t.heroScrim}}"></div>
+
+      <div style="position: relative; flex: 1 1 560px; min-width: 0; padding: 56px 56px 48px; display: flex; flex-direction: column; justify-content: center">
+        <div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; letter-spacing: 2px; background: {{t.accent}}; color: {{t.onAccent}}; border-radius: 8px; padding: 7px 12px">
+          <span class="eb-dot" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.onAccent}}"></span>ROAD TO 1,000 · LIVE
+        </div>
+        <div style="display: flex; align-items: flex-end; gap: 12px; margin-top: 18px" aria-label="985 of 1,000 career goals">
+          <sc-for list="{{digits}}" as="d" hint-placeholder-count="3">
+            <div style="width: 150px; height: 206px; border-radius: 22px; background: {{t.digitBg}}; border: 1px solid {{t.line}}; display: flex; align-items: center; justify-content: center; font-family: Anton, Impact, sans-serif; font-size: 186px; line-height: 1; color: {{t.accent}}; position: relative; overflow: hidden">
+              {{d.v}}<span style="position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: {{t.bg}}; opacity: .5"></span>
+            </div>
+          </sc-for>
+          <div style="padding-bottom: 14px; margin-left: 6px">
+            <div style="font-family: Anton, Impact, sans-serif; font-size: 52px; line-height: 1; color: {{t.sub}}">/1000</div>
+            <div style="font-size: 17px; font-weight: 800; margin-top: 6px">career goals</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(15, minmax(0, 1fr)); gap: 8px; margin-top: 22px; max-width: 640px">
+          <sc-for list="{{slots}}" as="s" hint-placeholder-count="15">
+            <div class="{{s.cls}}" style="height: 40px; border-radius: 10px; border: 2px {{s.style}} {{s.border}}; background: {{s.bg}}; color: {{s.color}}; display: flex; align-items: center; justify-content: center; font: 800 11px Inter, sans-serif">{{s.short}}</div>
+          </sc-for>
+        </div>
+        <div style="font-size: 17px; margin-top: 14px; color: {{t.sub}}"><strong style="color: {{t.ink}}">Goal 986 is next.</strong> Each box lights up when he scores it. Forecast for 1,000: [month year].</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px">
+          <a href="#" style="text-decoration: none; background: {{t.accent}}; color: {{t.onAccent}}; font-weight: 800; font-size: 17px; border-radius: 999px; padding: 17px 28px">Call the next match</a>
+          <a href="#" style="text-decoration: none; background: {{t.glass}}; border: 1px solid {{t.line}}; font-weight: 800; font-size: 17px; border-radius: 999px; padding: 17px 28px">Relive the greatest</a>
+        </div>
+      </div>
+      <div style="position: absolute; right: 22px; bottom: 16px; font-size: 11px; color: {{t.sub}}">Photo: {{t.credit}}</div>
+    </div>
+  </section>
+
+  <div style="margin-top: 26px; border-top: 1px solid {{t.line}}; border-bottom: 1px solid {{t.line}}; background: {{t.band}}; overflow: hidden; white-space: nowrap; padding: 14px 0" aria-label="Live fan calls">
+    <div class="eb-marquee" style="display: inline-flex; gap: 40px; font-size: 15px; font-weight: 700">
+      <sc-for list="{{ticker}}" as="k" hint-placeholder-count="10">
+        <span><span style="color: {{t.accent2}}">{{k.who}}</span> {{k.what}}</span>
+      </sc-for>
+    </div>
+  </div>
+
+  <section style="max-width: 1360px; margin: 0 auto; padding: 28px 40px 0; display: flex; flex-wrap: wrap; gap: 20px">
+    <div style="flex: 2 1 560px; min-width: 0; background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 28px; padding: 28px">
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px">
+        <div style="font-size: 12px; font-weight: 800; letter-spacing: 1.8px; color: {{t.sub}}">NEXT MATCH · SAUDI PRO LEAGUE</div>
+        <div style="font-size: 12px; font-weight: 800; letter-spacing: 1.4px; color: {{t.accent2}}">CALLS LOCK AT KICKOFF</div>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; flex-wrap: wrap">
+        <div style="font-family: Anton, Impact, sans-serif; font-size: 52px; line-height: 1">AL NASSR</div>
+        <div style="font-size: 16px; font-weight: 800; color: {{t.sub}}">vs</div>
+        <div style="font-family: Anton, Impact, sans-serif; font-size: 52px; line-height: 1; color: {{t.sub}}">[OPPONENT]</div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 20px">
+        <sc-for list="{{clock}}" as="c" hint-placeholder-count="4">
+          <div style="border-radius: 14px; background: {{t.digitBg}}; padding: 10px 0; text-align: center">
+            <div style="font-family: Anton, Impact, sans-serif; font-size: 40px; line-height: 1.1">{{c.v}}</div>
+            <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.4px; color: {{t.sub}}">{{c.u}}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top: 20px">
+        <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 800"><span>Fans say he scores [x]%</span><span style="color: {{t.sub}}">El Bicho says [y]%</span></div>
+        <div style="height: 10px; border-radius: 5px; background: {{t.line}}; margin-top: 8px; overflow: hidden"><div style="width: 72%; height: 100%; background: {{t.accent}}"></div></div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; align-items: center">
+        <span style="font-size: 13px; font-weight: 800; color: {{t.sub}}; margin-right: 4px">QUICK CALL</span>
+        <sc-for list="{{quick}}" as="q" hint-placeholder-count="5">
+          <button onClick="{{q.pick}}" aria-pressed="{{q.on}}" style="min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid {{q.border}}; background: {{q.bg}}; color: {{q.color}}; font: 700 14px Inter, sans-serif; cursor: pointer">{{q.label}}</button>
+        </sc-for>
+        <a href="#" style="margin-left: auto; text-decoration: none; background: {{t.accent}}; color: {{t.onAccent}}; font-weight: 800; border-radius: 14px; padding: 12px 20px">Lock call</a>
+      </div>
+    </div>
+
+    <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+      <div style="background: {{t.accent}}; color: {{t.onAccent}}; border-radius: 28px; padding: 24px">
+        <div style="font-size: 12px; font-weight: 800; letter-spacing: 1.8px; opacity: .85">THE ORACLE · EL BICHO'S CALL</div>
+        <div style="font-family: Anton, Impact, sans-serif; font-size: 34px; line-height: 1.02; margin-top: 8px">SCORES · 2ND HALF · RIGHT FOOT</div>
+        <div style="font-size: 14px; margin-top: 8px; line-height: 1.5; opacity: .92">Learned from its last miss: it overrated headers, so it weights them less now. Right [x] of its last [y].</div>
+      </div>
+      <div style="background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 28px; padding: 22px 24px; flex: 1">
+        <div style="font-size: 12px; font-weight: 800; letter-spacing: 1.8px; color: {{t.sub}}">TOP CALLERS · THIS SEASON</div>
+        <sc-for list="{{leaders}}" as="l" hint-placeholder-count="4">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid {{t.line}}">
+            <span style="font-family: Anton, Impact, sans-serif; font-size: 22px; width: 24px; color: {{t.accent2}}">{{l.rank}}</span>
+            <span style="flex: 1; font-weight: 700">{{l.who}}</span>
+            <span style="font-size: 13px; color: {{t.sub}}">{{l.score}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width: 1360px; margin: 0 auto; padding: 40px 40px 0">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px">
+      <h2 style="margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 44px; letter-spacing: 1px">PICKED FOR YOU</h2>
+      <div style="font-size: 15px; color: {{t.accent2}}; font-weight: 700">{{learned}}</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; margin-top: 18px">
+      <sc-for list="{{picks}}" as="p" hint-placeholder-count="4">
+        <a href="#" style="text-decoration: none; position: relative; aspect-ratio: 4 / 5; border-radius: 26px; overflow: hidden; background: {{t.tint}}; display: flex; flex-direction: column; justify-content: flex-end">
+          <img src="{{p.photo}}" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{p.pos}}; filter: {{t.filter}}; mix-blend-mode: {{t.blend}}">
+          <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.88) 100%)"></div>
+          <div style="position: absolute; top: 16px; left: 16px; width: 48px; height: 48px; border-radius: 50%; background: {{t.accent}}; color: {{t.onAccent}}; display: flex; align-items: center; justify-content: center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+          </div>
+          <div style="position: relative; padding: 20px; color: #FFFFFF">
+            <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.6px; color: {{t.accent2}}">{{p.tag}}</div>
+            <div style="font-family: Anton, Impact, sans-serif; font-size: 32px; line-height: 1; margin-top: 6px">{{p.title}}</div>
+            <div style="font-size: 13px; opacity: .82; margin-top: 6px">{{p.why}}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width: 1360px; margin: 0 auto; padding: 32px 40px 0; display: flex; flex-wrap: wrap; gap: 20px">
+    <div style="flex: 1 1 420px; min-width: 0; background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 28px; padding: 26px">
+      <div style="font-size: 12px; font-weight: 800; letter-spacing: 1.8px; color: {{t.sub}}">ON THIS DAY · REACT TO TEACH EL BICHO</div>
+      <div style="font-family: Anton, Impact, sans-serif; font-size: 34px; line-height: 1.02; margin-top: 8px">THE BICYCLE KICK VS JUVENTUS</div>
+      <div style="font-size: 15px; color: {{t.sub}}; margin-top: 4px">Champions League · Turin · 3 Apr 2018</div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px">
+        <sc-for list="{{reactions}}" as="r" hint-placeholder-count="4">
+          <button onClick="{{r.tap}}" class="{{r.cls}}" aria-pressed="{{r.on}}" style="min-height: 64px; border-radius: 16px; border: 1px solid {{r.border}}; background: {{r.bg}}; color: {{r.color}}; font: 800 14px Inter, sans-serif; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
+            <span>{{r.label}}</span><span style="font-size: 11px; font-weight: 600; opacity: .8">{{r.count}}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="margin-top: 16px; background: {{t.digitBg}}; border-radius: 16px; padding: 14px 16px">
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.4px; color: {{t.accent2}}">WHERE WERE YOU?</div>
+        <div style="font-size: 15px; margin-top: 4px">[Your memory of this goal, saved on Walrus]</div>
+      </div>
+    </div>
+
+    <div style="flex: 1 1 420px; min-width: 0; background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 28px; padding: 26px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <div style="font-size: 12px; font-weight: 800; letter-spacing: 1.8px; color: {{t.sub}}">GOALS BY SHIRT</div>
+        <a href="DesktopRoad.dc.html" style="font-size: 14px; font-weight: 800; color: {{t.accent2}}; text-decoration: none">Full road</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px">
+        <sc-for list="{{eras}}" as="e" hint-placeholder-count="6">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <span style="width: 10px; height: 28px; border-radius: 4px; background: {{e.color}}; border: 1px solid {{t.line}}"></span>
+            <span style="width: 150px; font-weight: 700; font-size: 14px">{{e.club}}</span>
+            <span style="flex: 1; height: 10px; border-radius: 5px; background: {{t.line}}; overflow: hidden"><span style="display: block; height: 100%; width: {{e.w}}; background: {{t.accent}}"></span></span>
+            <span style="font-family: Anton, Impact, sans-serif; font-size: 22px; width: 48px; text-align: right">{{e.goals}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <footer style="max-width: 1360px; margin: 0 auto; padding: 40px 40px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: {{t.sub}}">
+    <span style="font-family: Anton, Impact, sans-serif; font-size: 20px; letter-spacing: 1.5px; color: {{t.ink}}">EL BICHO</span>
+    <span>Memories on Walrus · calls verified on Sui through Tatum</span>
+    <span>Photos: Анна Нэсси (CC BY-SA 3.0) · KANO PHOTO (CC BY-SA 2.0) · Mehrdad Esfahani / Mehr News</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["red","white","gold"],"default":"red","section":"Look"},"$preview":{"width":1440,"height":1900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null, n: 940, mine: {}, taps: 0, pop: '', quick: 'Scores' };
+  }
+  componentDidMount() {
+    var self = this;
+    this.timer = setInterval(function () {
+      if (self.state.n >= 985) { clearInterval(self.timer); return; }
+      self.setState({ n: self.state.n + 1 });
+    }, 28);
+  }
+  componentWillUnmount() { clearInterval(this.timer); }
+  tokens(k) {
+    var P = { red: '/_blob/d72988f21b2d1c77f2b6a19a9b3959bf', white: '/_blob/725726687a43b39d43fcc110a237ba7a', gold: '/_blob/3e54b3899f325766af27840538cd5f18' };
+    var T = {
+      red: { label: 'Red', kit: 'red Portugal', bg: '#0D0506', ink: '#FFFFFF', sub: 'rgba(255,255,255,.72)', accent: '#E8291D', accent2: '#F5C542', onAccent: '#FFFFFF', card: '#170A0B', band: '#150809', digitBg: 'rgba(255,255,255,.07)', glass: 'rgba(13,5,6,.5)', line: 'rgba(255,255,255,.14)', tint: '#8E120B', filter: 'grayscale(1) contrast(1.25) brightness(1.05)', blend: 'multiply', stroke: 'rgba(245,197,66,.3)', photo: P.red, pos: 'center 14%', heroScrim: 'linear-gradient(90deg, #2A0605 30%, rgba(42,6,5,.55) 50%, rgba(42,6,5,0) 70%)', credit: 'Анна Нэсси, CC BY-SA 3.0', swatch: '#E8291D' },
+      white: { label: 'White', kit: 'white Real Madrid', bg: '#F6F3EC', ink: '#141414', sub: 'rgba(20,20,20,.68)', accent: '#141414', accent2: '#8C6A12', onAccent: '#FFFFFF', card: '#FFFFFF', band: '#EFE9DC', digitBg: 'rgba(0,0,0,.05)', glass: 'rgba(255,255,255,.6)', line: 'rgba(0,0,0,.12)', tint: '#E9DFC6', filter: 'grayscale(1) contrast(1.1) brightness(1.1)', blend: 'multiply', stroke: 'rgba(140,106,18,.3)', photo: P.white, pos: 'center 26%', heroScrim: 'linear-gradient(90deg, #ECE3CD 30%, rgba(236,227,205,.55) 50%, rgba(236,227,205,0) 70%)', credit: 'KANO PHOTO, CC BY-SA 2.0', swatch: '#FFFFFF' },
+      gold: { label: 'Gold', kit: 'Al Nassr', bg: '#071029', ink: '#FFFFFF', sub: 'rgba(255,255,255,.72)', accent: '#FFD100', accent2: '#FFD100', onAccent: '#071029', card: '#0C1838', band: '#0A1533', digitBg: 'rgba(255,255,255,.07)', glass: 'rgba(7,16,41,.5)', line: 'rgba(255,255,255,.14)', tint: '#1A2F73', filter: 'grayscale(1) contrast(1.2) brightness(1.15)', blend: 'luminosity', stroke: 'rgba(255,209,0,.3)', photo: P.gold, pos: 'center 10%', heroScrim: 'linear-gradient(90deg, #0B1A45 30%, rgba(11,26,69,.55) 50%, rgba(11,26,69,0) 70%)', credit: 'Mehrdad Esfahani / Mehr News, attribution licence', swatch: '#FFD100' }
+    };
+    return T[k] || T.red;
+  }
+  renderVals() {
+    var key = this.state.theme || this.props.theme || 'red';
+    var t = this.tokens(key);
+    var self = this, s = this.state;
+    var themes = ['red', 'white', 'gold'].map(function (k) {
+      var on = k === key, x = self.tokens(k);
+      return { label: x.label, swatch: x.swatch, on: on ? 'true' : 'false', ring: on ? '2px solid ' + t.accent2 : '1px solid transparent', bg: on ? t.digitBg : 'transparent', pick: function () { self.setState({ theme: k }); } };
+    });
+    var stories = [
+      { label: 'Live calls', mark: 'LIVE', ring: t.accent, bg: t.accent, ink: t.onAccent },
+      { label: 'Goal 985', mark: '985', ring: t.accent2, bg: t.digitBg, ink: t.ink },
+      { label: 'On this day', mark: '3 APR', ring: t.accent2, bg: t.digitBg, ink: t.ink },
+      { label: 'Your memories', mark: '12', ring: t.line, bg: t.digitBg, ink: t.ink },
+      { label: '1,000 Wall', mark: 'WALL', ring: t.line, bg: t.digitBg, ink: t.ink },
+      { label: 'Eras', mark: 'CR', ring: t.line, bg: t.digitBg, ink: t.ink }
+    ];
+    var digits = String(s.n).split('').map(function (v) { return { v: v }; });
+    var slots = [];
+    for (var g = 986; g <= 1000; g++) {
+      var next = g === 986, last = g === 1000;
+      slots.push({ short: String(g), cls: next ? 'eb-next' : '', style: next || last ? 'solid' : 'dashed', border: next || last ? t.accent : t.line, bg: last ? t.accent : 'transparent', color: last ? t.onAccent : next ? t.accent : t.sub });
+    }
+    var tk = [['[fan]', 'called a header'], ['[fan]', 'called 2nd half'], ['[fan]', 'says he blanks'], ['[fan]', 'called a free kick'], ['[fan]', 'locked a penalty call'], ['[fan]', 'called a brace'], ['[fan]', 'added a memory of Euro 2016']];
+    var ticker = tk.concat(tk).map(function (x) { return { who: x[0], what: x[1] }; });
+    var clock = [['[d]', 'DAYS'], ['[h]', 'HOURS'], ['[m]', 'MINUTES'], ['[s]', 'SECONDS']].map(function (c) { return { v: c[0], u: c[1] }; });
+    var quick = ['Scores', 'Blanks', 'Header', 'Free kick', 'Penalty'].map(function (q) {
+      var on = s.quick === q;
+      return { label: q, on: on ? 'true' : 'false', bg: on ? t.accent : 'transparent', color: on ? t.onAccent : t.ink, border: on ? t.accent : t.line, pick: function () { self.setState({ quick: q }); } };
+    });
+    var leaders = [['1', '[handle]', '[x] of [y] right'], ['2', '[handle]', '[x] of [y] right'], ['3', '[handle]', '[x] of [y] right'], ['4', 'You', '3 of 5 right']].map(function (l) { return { rank: l[0], who: l[1], score: l[2] }; });
+    var picks = [
+      { tag: 'WORLD CUP 2018', title: 'Hat-trick vs Spain', why: 'Because you love late free kicks', photo: P0(), pos: 'center 15%' },
+      { tag: 'REAL MADRID', title: 'The Madrid years', why: 'Your favourite era', photo: '/_blob/725726687a43b39d43fcc110a237ba7a', pos: 'center 20%' },
+      { tag: 'AL NASSR', title: 'Hat-trick to 985', why: 'The newest goals', photo: '/_blob/3e54b3899f325766af27840538cd5f18', pos: 'center 10%' },
+      { tag: 'NATIONS LEAGUE 2024', title: 'Goal 900 vs Croatia', why: 'A milestone night', photo: P0(), pos: 'center 30%' }
+    ];
+    function P0() { return '/_blob/d72988f21b2d1c77f2b6a19a9b3959bf'; }
+    var counts = { Unreal: 1204, SIUUU: 3311, Tears: 287, Remember: 96 };
+    var reactions = ['Unreal', 'SIUUU', 'Tears', 'Remember'].map(function (name) {
+      var on = !!s.mine[name];
+      return { label: name, on: on ? 'true' : 'false', count: (counts[name] + (on ? 1 : 0)).toLocaleString(), bg: on ? t.accent : 'transparent', color: on ? t.onAccent : t.ink, border: on ? t.accent : t.line, cls: s.pop === name ? 'eb-pop' : '',
+        tap: function () { var m = Object.assign({}, s.mine); m[name] = !m[name]; self.setState({ mine: m, taps: s.taps + 1, pop: name }); } };
+    });
+    var learned = s.taps === 0 ? 'El Bicho learned: you replay free kicks the most' : s.taps < 3 ? 'Saved to your memory on Walrus' : 'Learned: big-night overhead goals. Your picks just changed';
+    var eras = [
+      { club: 'Real Madrid', goals: '450', w: '100%', color: '#FFFFFF' },
+      { club: 'Manchester United', goals: '145', w: '32%', color: '#DA020E' },
+      { club: 'Portugal', goals: '[x]', w: '33%', color: '#C8102E' },
+      { club: 'Al Nassr', goals: '[x]', w: '28%', color: '#FFD100' },
+      { club: 'Juventus', goals: '101', w: '22%', color: '#111111' },
+      { club: 'Sporting CP', goals: '5', w: '2%', color: '#00A650' }
+    ];
+    return { t: t, themes: themes, stories: stories, digits: digits, slots: slots, ticker: ticker, clock: clock, quick: quick, leaders: leaders, picks: picks, reactions: reactions, learned: learned, eras: eras };
+  }
+}
+</script>
+</body>
+</html>

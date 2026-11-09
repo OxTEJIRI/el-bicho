@@ -1,0 +1,28 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-11-09T12:00:00Z"},
+  "title": "El Bicho",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Onboard.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "Mobile · First run taste quiz", "is_interactive": true, "radius": 40},
+    "Main.dc.html": {"x": 470, "y": 0, "w": 390, "h": 1240, "title": "Mobile · Home (scroll)", "is_interactive": true, "radius": 40},
+    "Road.dc.html": {"x": 940, "y": 0, "w": 390, "h": 1240, "title": "Mobile · Road to 1,000 (scroll)", "radius": 40},
+    "Relive.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "Mobile · Relive", "is_interactive": true, "radius": 40},
+    "Call.dc.html": {"x": 1880, "y": 0, "w": 390, "h": 844, "title": "Mobile · Call it", "is_interactive": true, "radius": 40},
+    "Ask.dc.html": {"x": 2350, "y": 0, "w": 390, "h": 844, "title": "Mobile · Ask El Bicho", "radius": 40},
+    "You.dc.html": {"x": 2820, "y": 0, "w": 390, "h": 844, "title": "Mobile · You and kits", "is_interactive": true, "radius": 40},
+    "Nav.dc.html": {"x": 3290, "y": 0, "w": 390, "h": 96, "title": "Component · Bottom nav"},
+    "Desktop.dc.html": {"x": 0, "y": 1700, "w": 1440, "h": 1900, "title": "Desktop · Home", "expand": "fill", "is_interactive": true},
+    "DesktopRoad.dc.html": {"x": 1520, "y": 1700, "w": 1440, "h": 1500, "title": "Desktop · Road to 1,000", "expand": "fill"},
+    "Goal1000.dc.html": {"x": 3040, "y": 1700, "w": 390, "h": 844, "title": "Mobile · Goal 1,000 moment", "radius": 40},
+    "Share.dc.html": {"x": 3510, "y": 1700, "w": 360, "h": 640, "title": "Share card · Story 9:16", "radius": 24}
+  },
+  "order": ["Onboard.dc.html", "Main.dc.html", "Road.dc.html", "Relive.dc.html", "Call.dc.html", "Ask.dc.html", "You.dc.html", "Nav.dc.html", "Desktop.dc.html", "DesktopRoad.dc.html", "Goal1000.dc.html", "Share.dc.html"],
+  "notes": {
+    "mobile": {"x": 0, "y": -300, "text": "Mobile", "kind": "title1", "maxW": 3680},
+    "desktop": {"x": 0, "y": 1400, "text": "Desktop and moments", "kind": "title1", "maxW": 3870},
+    "themes": {"x": 3290, "y": 180, "w": 320, "text": "Three kit themes, switched in one tap. Red (Portugal) is the default; White swaps in the Madrid photo; Gold swaps in the Al Nassr photo. Every artboard has a Theme tweak so you can preview it in any kit.", "fill": "orange"}
+  },
+  "designSystems": []
+}

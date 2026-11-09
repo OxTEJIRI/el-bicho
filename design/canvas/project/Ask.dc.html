@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ask El Bicho</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{opacity:.85}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: Inter, system-ui, sans-serif">
+  <img src="{{t.photo}}" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{t.pos}}; opacity: .18">
+  <div style="position: relative; height: 100%; display: flex; flex-direction: column">
+    <div style="padding: 54px 20px 12px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid {{t.line}}; background: {{t.nav}}">
+      <div style="width: 44px; height: 44px; border-radius: 50%; background: {{t.accent}}; color: {{t.onAccent}}; display: flex; align-items: center; justify-content: center; font-family: Anton, Impact, sans-serif; font-size: 20px">EB</div>
+      <div>
+        <div style="font-weight: 700; font-size: 17px">Ask El Bicho</div>
+        <div style="font-size: 12px; color: {{t.sub}}">Answers from 985 goals and your own memories</div>
+      </div>
+    </div>
+
+    <div style="flex: 1; overflow: hidden; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="align-self: flex-end; max-width: 80%; background: {{t.accent}}; color: {{t.onAccent}}; border-radius: 18px 18px 4px 18px; padding: 10px 14px; font-size: 15px">How many free kicks did he score for Madrid?</div>
+      <div style="align-self: flex-start; max-width: 86%; background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 18px 18px 18px 4px; padding: 12px 14px; font-size: 15px; line-height: 1.45">
+        [x] free-kick goals in a Madrid shirt. His favourite spot was just left of the D.
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px">
+          <span style="font-size: 11px; font-weight: 600; border: 1px solid {{t.line}}; border-radius: 999px; padding: 4px 8px; color: {{t.sub}}">Goal memory · free kick · Madrid</span>
+          <span style="font-size: 11px; font-weight: 600; border: 1px solid {{t.line}}; border-radius: 999px; padding: 4px 8px; color: {{t.sub}}">Relive 3 of them</span>
+        </div>
+      </div>
+      <div style="align-self: flex-end; max-width: 80%; background: {{t.accent}}; color: {{t.onAccent}}; border-radius: 18px 18px 4px 18px; padding: 10px 14px; font-size: 15px">Where was I when he scored the bicycle kick?</div>
+      <div style="align-self: flex-start; max-width: 86%; background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 18px 18px 18px 4px; padding: 12px 14px; font-size: 15px; line-height: 1.45">
+        You told me in April: [your memory, in your words]. You reacted SIUUU to it 4 times since.
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px">
+          <span style="font-size: 11px; font-weight: 600; border: 1px solid {{t.accent2}}; border-radius: 999px; padding: 4px 8px; color: {{t.accent2}}">Your memory · saved on Walrus</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 0 16px 10px; display: flex; gap: 8px; overflow: hidden">
+      <button style="flex: none; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.card}}; color: {{t.ink}}; font: 600 13px Inter, sans-serif">Headers vs Atlético?</button>
+      <button style="flex: none; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.card}}; color: {{t.ink}}; font: 600 13px Inter, sans-serif">When does he hit 1,000?</button>
+    </div>
+    <div style="padding: 0 16px 12px; display: flex; gap: 8px; align-items: center">
+      <label for="ask" style="position: absolute; left: -9999px">Ask a question</label>
+      <input id="ask" placeholder="Ask about any goal, or your memories" style="flex: 1; min-height: 48px; border-radius: 16px; border: 1px solid {{t.line}}; background: {{t.card}}; color: {{t.ink}}; padding: 0 14px; font: 15px Inter, sans-serif">
+      <button aria-label="Ask by voice" style="width: 48px; height: 48px; border-radius: 16px; border: 0; background: {{t.accent}}; color: {{t.onAccent}}; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>
+      </button>
+    </div>
+
+    <div>
+      <dc-import name="Nav" active="ask" theme="{{theme}}" hint-size="390px,96px"></dc-import>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["red","white","gold"],"default":"red","section":"Look"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var T = {
+      red: { bg: '#0D0506', ink: '#FFFFFF', sub: 'rgba(255,255,255,.74)', accent: '#E8291D', accent2: '#F5C542', onAccent: '#FFFFFF', card: 'rgba(34,14,15,.94)', nav: 'rgba(13,5,6,.96)', line: 'rgba(255,255,255,.14)', photo: '/_blob/d72988f21b2d1c77f2b6a19a9b3959bf', pos: 'center 18%' },
+      white: { bg: '#F6F3EC', ink: '#141414', sub: 'rgba(20,20,20,.70)', accent: '#141414', accent2: '#8C6A12', onAccent: '#FFFFFF', card: '#FFFFFF', nav: 'rgba(246,243,236,.97)', line: 'rgba(0,0,0,.12)', photo: '/_blob/725726687a43b39d43fcc110a237ba7a', pos: 'center 30%' },
+      gold: { bg: '#071029', ink: '#FFFFFF', sub: 'rgba(255,255,255,.74)', accent: '#FFD100', accent2: '#FFD100', onAccent: '#071029', card: 'rgba(14,26,58,.96)', nav: 'rgba(7,16,41,.97)', line: 'rgba(255,255,255,.14)', photo: '/_blob/3e54b3899f325766af27840538cd5f18', pos: 'center 12%' }
+    };
+    return { theme: this.props.theme || 'red', t: T[this.props.theme] || T.red };
+  }
+}
+</script>
+</body>
+</html>

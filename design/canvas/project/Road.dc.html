@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Road to 1,000</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{opacity:.88}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 1240px; position: relative; background: {{t.bg}}; color: {{t.ink}}; font-family: Inter, system-ui, sans-serif">
+  <div style="padding: 52px 18px 0">
+    <div style="font-size: 12px; font-weight: 800; letter-spacing: 2px; color: {{t.accent2}}">THE ROAD</div>
+    <div style="font-family: Anton, Impact, sans-serif; font-size: 52px; line-height: .95; margin-top: 6px">985 GOALS.<br>15 TO GO.</div>
+  </div>
+
+  <div style="margin: 18px 16px 0; background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 22px; padding: 16px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.6px; color: {{t.sub}}">WHEN DOES HE HIT 1,000?</div>
+      <div style="font-size: 11px; font-weight: 700; color: {{t.sub}}">illustration</div>
+    </div>
+    <div style="font-family: Anton, Impact, sans-serif; font-size: 34px; line-height: 1; margin-top: 8px; color: {{t.accent}}">[MONTH YEAR]</div>
+    <div style="font-size: 13px; color: {{t.sub}}; margin-top: 4px">Range [from] to [to] · narrows after every match</div>
+    <svg viewBox="0 0 340 130" width="100%" height="130" role="img" aria-label="Forecast range narrowing over time" style="margin-top: 10px; display: block">
+      <path d="M0 20 L120 35 L220 50 L340 58 L340 72 L220 82 L120 100 L0 120 Z" fill="{{t.band}}"></path>
+      <path d="M0 70 L120 68 L220 66 L340 65" fill="none" stroke="{{t.accent}}" stroke-width="3" stroke-linecap="round"></path>
+      <circle cx="340" cy="65" r="5" fill="{{t.accent}}"></circle>
+      <line x1="0" y1="129" x2="340" y2="129" stroke="{{t.line}}"></line>
+    </svg>
+    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: {{t.sub}}"><span>Goal 960</span><span>Goal 975</span><span>Goal 985 · now</span></div>
+  </div>
+
+  <div style="padding: 22px 18px 8px; font-family: Anton, Impact, sans-serif; font-size: 22px">GOALS BY SHIRT</div>
+  <div style="padding: 0 16px; display: flex; flex-direction: column; gap: 8px">
+    <sc-for list="{{eras}}" as="e" hint-placeholder-count="6">
+      <div style="background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 16px; padding: 12px 14px; display: flex; align-items: center; gap: 12px">
+        <div style="width: 10px; height: 38px; border-radius: 5px; background: {{e.color}}; border: 1px solid {{t.line}}"></div>
+        <div style="flex: 1; min-width: 0">
+          <div style="font-weight: 800; font-size: 15px">{{e.club}}</div>
+          <div style="height: 6px; border-radius: 3px; background: {{t.line}}; margin-top: 6px; overflow: hidden"><div style="height: 100%; width: {{e.w}}; background: {{t.accent}}"></div></div>
+        </div>
+        <div style="font-family: Anton, Impact, sans-serif; font-size: 26px; min-width: 58px; text-align: right">{{e.goals}}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="padding: 22px 18px 8px; font-family: Anton, Impact, sans-serif; font-size: 22px">MILESTONES</div>
+  <div style="padding: 0 18px 0 30px; position: relative">
+    <div style="position: absolute; left: 36px; top: 6px; bottom: 6px; width: 2px; background: {{t.line}}"></div>
+    <sc-for list="{{miles}}" as="m" hint-placeholder-count="5">
+      <div style="display: flex; gap: 16px; padding: 8px 0; position: relative">
+        <div style="width: 14px; height: 14px; border-radius: 50%; margin-top: 4px; flex: none; background: {{m.dot}}; border: 2px solid {{t.accent}}"></div>
+        <div>
+          <div style="font-family: Anton, Impact, sans-serif; font-size: 20px; line-height: 1.1">{{m.n}}</div>
+          <div style="font-size: 13px; color: {{t.sub}}">{{m.what}}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="margin: 18px 16px 0; background: {{t.accent}}; color: {{t.onAccent}}; border-radius: 22px; padding: 16px; display: flex; gap: 12px; align-items: center">
+    <div style="flex: 1">
+      <div style="font-family: Anton, Impact, sans-serif; font-size: 22px; line-height: 1.05">WHAT IF IT KNEW?</div>
+      <div style="font-size: 13px; margin-top: 4px; opacity: .9">Replay: what El Bicho would have forecast for goals 900, 950 and 985, against the real dates.</div>
+    </div>
+    <a href="#" style="flex: none; background: {{t.onAccent}}; color: {{t.accent}}; font-weight: 800; font-size: 14px; border-radius: 999px; padding: 12px 16px; text-decoration: none">Replay</a>
+  </div>
+  <div style="height: 24px"></div>
+
+  <div style="position: sticky; bottom: 0">
+    <dc-import name="Nav" active="road" theme="{{key}}" hint-size="390px,96px"></dc-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["red","white","gold"],"default":"red","section":"Look"},"$preview":{"width":390,"height":1240}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var T = {
+      red: { bg: '#0D0506', ink: '#FFFFFF', sub: 'rgba(255,255,255,.72)', accent: '#E8291D', accent2: '#F5C542', onAccent: '#FFFFFF', card: '#170A0B', band: 'rgba(232,41,29,.22)', line: 'rgba(255,255,255,.14)' },
+      white: { bg: '#F6F3EC', ink: '#141414', sub: 'rgba(20,20,20,.68)', accent: '#141414', accent2: '#8C6A12', onAccent: '#FFFFFF', card: '#FFFFFF', band: 'rgba(140,106,18,.18)', line: 'rgba(0,0,0,.12)' },
+      gold: { bg: '#071029', ink: '#FFFFFF', sub: 'rgba(255,255,255,.72)', accent: '#FFD100', accent2: '#FFD100', onAccent: '#071029', card: '#0C1838', band: 'rgba(255,209,0,.2)', line: 'rgba(255,255,255,.14)' }
+    };
+    var key = this.props.theme || 'red';
+    var eras = [
+      { club: 'Real Madrid', goals: '450', w: '100%', color: '#FFFFFF' },
+      { club: 'Manchester United', goals: '145', w: '32%', color: '#DA020E' },
+      { club: 'Portugal', goals: '[x]', w: '33%', color: '#C8102E' },
+      { club: 'Al Nassr', goals: '[x]', w: '28%', color: '#FFD100' },
+      { club: 'Juventus', goals: '101', w: '22%', color: '#111111' },
+      { club: 'Sporting CP', goals: '5', w: '2%', color: '#00A650' }
+    ];
+    var miles = [
+      { n: 'GOAL 1', what: 'Sporting CP · 2002', dot: 'transparent' },
+      { n: 'GOAL 900', what: 'Portugal vs Croatia · 5 Sep 2024', dot: 'transparent' },
+      { n: 'GOAL 985', what: 'Hat-trick vs Al Kholood · 2026', dot: 'transparent' },
+      { n: 'GOAL 986', what: 'Next. Call it before kickoff', dot: T[key].accent },
+      { n: 'GOAL 1,000', what: 'The 1,000 Wall opens', dot: 'transparent' }
+    ];
+    return { key: key, t: T[key] || T.red, eras: eras, miles: miles };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Goal 1,000 moment</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{opacity:.85}
+@keyframes eb-rise{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+.eb-rise{animation:eb-rise 18s linear infinite}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: {{t.accent}}; color: {{t.onAccent}}; font-family: Inter, system-ui, sans-serif">
+  <img src="{{t.photo}}" alt="Cristiano Ronaldo celebrating" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{t.pos}}; mix-blend-mode: multiply; opacity: .55">
+  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 100%)"></div>
+
+  <div style="position: absolute; top: 120px; right: -10px; width: 220px; height: 420px; overflow: hidden; opacity: .9" aria-hidden="true">
+    <div class="eb-rise" style="display: flex; flex-direction: column; gap: 10px">
+      <sc-for list="{{wall}}" as="w" hint-placeholder-count="8">
+        <div style="background: rgba(0,0,0,.35); color: #FFFFFF; border-radius: 14px; padding: 8px 12px; font-size: 13px; line-height: 1.35">{{w.msg}}<div style="font-size: 11px; opacity: .7; margin-top: 2px">{{w.who}}</div></div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="position: relative; height: 100%; display: flex; flex-direction: column; padding: 60px 22px 34px; box-sizing: border-box">
+    <div style="font-size: 13px; font-weight: 700; letter-spacing: 2px">EL BICHO · [DATE]</div>
+    <div style="font-family: Anton, Impact, sans-serif; font-size: 156px; line-height: .85; margin-top: 18px; color: #FFFFFF">1000</div>
+    <div style="font-family: Anton, Impact, sans-serif; font-size: 40px; line-height: 1; color: #FFFFFF; margin-top: 6px">HE DID IT.</div>
+
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+      <div style="background: rgba(0,0,0,.6); color: #FFFFFF; border-radius: 20px; padding: 16px">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.4px; color: {{t.accent2}}">YOU CALLED IT</div>
+        <div style="font-size: 17px; font-weight: 700; margin-top: 4px">Scores · [how] · [half]. Locked [x] days before kickoff.</div>
+        <div style="font-size: 12px; opacity: .75; margin-top: 4px">Proof timestamped on Sui, checked through Tatum</div>
+      </div>
+      <a href="#" style="text-decoration: none; text-align: center; background: #FFFFFF; color: #141414; font-weight: 700; font-size: 16px; border-radius: 999px; padding: 16px">Claim your "I called it" badge</a>
+      <a href="#" style="text-decoration: none; text-align: center; border: 1.5px solid #FFFFFF; color: #FFFFFF; font-weight: 700; font-size: 16px; border-radius: 999px; padding: 15px">Read the 1,000 Wall</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["red","white","gold"],"default":"red","section":"Look"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var T = {
+      red: { accent: '#C8170F', accent2: '#F5C542', onAccent: '#FFFFFF', photo: '/_blob/d72988f21b2d1c77f2b6a19a9b3959bf', pos: 'center 15%' },
+      white: { accent: '#8C6A12', accent2: '#F5DB8B', onAccent: '#FFFFFF', photo: '/_blob/725726687a43b39d43fcc110a237ba7a', pos: 'center 25%' },
+      gold: { accent: '#E0B800', accent2: '#FFE680', onAccent: '#071029', photo: '/_blob/3e54b3899f325766af27840538cd5f18', pos: 'center 10%' }
+    };
+    var msgs = [
+      ['[fan message from the 1,000 Wall]', '[handle] · Lagos'],
+      ['[fan message]', '[handle] · Lisbon'],
+      ['[fan message]', '[handle] · Riyadh'],
+      ['[fan message]', '[handle] · Madrid'],
+      ['[fan message]', '[handle] · Manchester'],
+      ['[fan message]', '[handle] · Funchal']
+    ];
+    var wall = msgs.concat(msgs).map(function (m) { return { msg: m[0], who: m[1] }; });
+    return { t: T[this.props.theme] || T.red, wall: wall };
+  }
+}
+</script>
+</body>
+</html>

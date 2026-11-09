@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>First run taste quiz</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+@keyframes eb-in{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+.eb-in{animation:eb-in .4s ease-out}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: Inter, system-ui, sans-serif; transition: background .3s">
+  <div style="position: absolute; inset: 0; background: {{t.tint}}">
+    <img src="{{t.photo}}" alt="Cristiano Ronaldo" style="width: 100%; height: 100%; object-fit: cover; object-position: {{t.pos}}; filter: grayscale(1) contrast(1.2); mix-blend-mode: multiply; opacity: {{t.photoOp}}">
+  </div>
+  <div style="position: absolute; inset: 0; background: {{t.scrim}}"></div>
+
+  <div style="position: relative; height: 100%; display: flex; flex-direction: column; padding: 56px 22px 34px; box-sizing: border-box">
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px" aria-label="Progress">
+      <sc-for list="{{bars}}" as="b" hint-placeholder-count="4">
+        <div style="height: 4px; border-radius: 2px; background: {{b.c}}"></div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{s0}}" hint-placeholder-val="{{ true }}">
+      <div class="eb-in" style="margin-top: auto">
+        <div style="font-size: 13px; font-weight: 800; letter-spacing: 2px; color: {{t.accent2}}">WELCOME TO</div>
+        <div style="font-family: Anton, Impact, sans-serif; font-size: 92px; line-height: .88; margin-top: 6px">EL<br>BICHO</div>
+        <div style="font-size: 17px; line-height: 1.45; margin-top: 14px; max-width: 320px">Relive every goal. Call the next one. Count down to 1,000 together. Three quick taps and El Bicho knows your Ronaldo.</div>
+        <button onClick="{{next}}" style="margin-top: 26px; width: 100%; min-height: 56px; border-radius: 18px; border: 0; background: {{t.accent}}; color: {{t.onAccent}}; font: 800 17px Inter, sans-serif; cursor: pointer">Let's go</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s1}}" hint-placeholder-val="{{ false }}">
+      <div class="eb-in" style="margin-top: auto">
+        <div style="font-size: 13px; font-weight: 800; letter-spacing: 2px; color: {{t.accent2}}">1 OF 3</div>
+        <div style="font-family: Anton, Impact, sans-serif; font-size: 44px; line-height: .95; margin-top: 6px">WHICH RONALDO<br>IS YOURS?</div>
+        <div style="font-size: 14px; color: {{t.sub}}; margin-top: 6px">Pick as many as you like.</div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 16px">
+          <sc-for list="{{eras}}" as="o" hint-placeholder-count="6">
+            <button onClick="{{o.pick}}" aria-pressed="{{o.on}}" style="min-height: 64px; border-radius: 16px; border: 2px solid {{o.border}}; background: {{o.bg}}; color: {{o.color}}; font: 800 15px Inter, sans-serif; cursor: pointer; text-align: left; padding: 10px 14px">{{o.label}}<br><span style="font-weight: 500; font-size: 12px; opacity: .8">{{o.sub}}</span></button>
+          </sc-for>
+        </div>
+        <button onClick="{{next}}" style="margin-top: 18px; width: 100%; min-height: 56px; border-radius: 18px; border: 0; background: {{t.accent}}; color: {{t.onAccent}}; font: 800 17px Inter, sans-serif; cursor: pointer">Next</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s2}}" hint-placeholder-val="{{ false }}">
+      <div class="eb-in" style="margin-top: auto">
+        <div style="font-size: 13px; font-weight: 800; letter-spacing: 2px; color: {{t.accent2}}">2 OF 3</div>
+        <div style="font-family: Anton, Impact, sans-serif; font-size: 44px; line-height: .95; margin-top: 6px">THE GOALS<br>YOU LIVE FOR</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px">
+          <sc-for list="{{kinds}}" as="o" hint-placeholder-count="6">
+            <button onClick="{{o.pick}}" aria-pressed="{{o.on}}" style="min-height: 48px; padding: 0 18px; border-radius: 999px; border: 2px solid {{o.border}}; background: {{o.bg}}; color: {{o.color}}; font: 800 15px Inter, sans-serif; cursor: pointer">{{o.label}}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{next}}" style="margin-top: 22px; width: 100%; min-height: 56px; border-radius: 18px; border: 0; background: {{t.accent}}; color: {{t.onAccent}}; font: 800 17px Inter, sans-serif; cursor: pointer">Next</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s3}}" hint-placeholder-val="{{ false }}">
+      <div class="eb-in" style="margin-top: auto">
+        <div style="font-size: 13px; font-weight: 800; letter-spacing: 2px; color: {{t.accent2}}">3 OF 3</div>
+        <div style="font-family: Anton, Impact, sans-serif; font-size: 44px; line-height: .95; margin-top: 6px">PICK YOUR KIT</div>
+        <div style="font-size: 14px; color: {{t.sub}}; margin-top: 6px">The whole app wears it. Change it any time.</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 16px">
+          <sc-for list="{{kits}}" as="o" hint-placeholder-count="3">
+            <button onClick="{{o.pick}}" aria-pressed="{{o.on}}" style="min-height: 60px; border-radius: 16px; border: 2px solid {{o.border}}; background: {{t.card}}; color: {{t.ink}}; font: 800 16px Inter, sans-serif; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 0 14px">
+              <span style="width: 30px; height: 30px; border-radius: 50%; background: {{o.swatch}}; border: 1px solid {{t.line}}"></span>{{o.label}}<span style="margin-left: auto; font-weight: 500; font-size: 13px; color: {{t.sub}}">{{o.sub}}</span>
+            </button>
+          </sc-for>
+        </div>
+        <button onClick="{{next}}" style="margin-top: 18px; width: 100%; min-height: 56px; border-radius: 18px; border: 0; background: {{t.accent}}; color: {{t.onAccent}}; font: 800 17px Inter, sans-serif; cursor: pointer">Build my El Bicho</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s4}}" hint-placeholder-val="{{ false }}">
+      <div class="eb-in" style="margin-top: auto">
+        <div style="font-size: 13px; font-weight: 800; letter-spacing: 2px; color: {{t.accent2}}">EL BICHO REMEMBERS YOU</div>
+        <div style="background: {{t.accent}}; color: {{t.onAccent}}; border-radius: 22px; padding: 18px; margin-top: 12px">
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.6px; opacity: .85">YOUR RONALDO</div>
+          <div style="font-family: Anton, Impact, sans-serif; font-size: 32px; line-height: 1.02; margin-top: 6px">{{profile}}</div>
+          <div style="font-size: 13px; margin-top: 8px; opacity: .9">Saved to your memory on Walrus. It sharpens with every reaction and call.</div>
+        </div>
+        <a href="Main.dc.html" style="display: flex; align-items: center; justify-content: center; margin-top: 18px; min-height: 56px; border-radius: 18px; background: {{t.ink}}; color: {{t.bg}}; font: 800 17px Inter, sans-serif; text-decoration: none">Enter El Bicho</a>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["red","white","gold"],"default":"red","section":"Look"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { step: 0, eras: { Madrid: true }, kinds: { 'Free kicks': true }, kit: null }; }
+  renderVals() {
+    var T = {
+      red: { label: 'Red', sub: 'Portugal', bg: '#0D0506', ink: '#FFFFFF', sub2: 'rgba(255,255,255,.74)', accent: '#E8291D', accent2: '#F5C542', onAccent: '#FFFFFF', card: 'rgba(23,10,11,.9)', line: 'rgba(255,255,255,.16)', tint: '#8E120B', photo: '/_blob/d72988f21b2d1c77f2b6a19a9b3959bf', pos: 'center 15%', photoOp: '1', scrim: 'linear-gradient(180deg, rgba(13,5,6,.3) 0%, rgba(13,5,6,.25) 35%, rgba(13,5,6,.92) 62%, #0D0506 100%)', swatch: '#E8291D' },
+      white: { label: 'White', sub: 'Real Madrid', bg: '#F6F3EC', ink: '#141414', sub2: 'rgba(20,20,20,.7)', accent: '#141414', accent2: '#8C6A12', onAccent: '#FFFFFF', card: '#FFFFFF', line: 'rgba(0,0,0,.14)', tint: '#E9DFC6', photo: '/_blob/725726687a43b39d43fcc110a237ba7a', pos: 'center 25%', photoOp: '1', scrim: 'linear-gradient(180deg, rgba(246,243,236,.25) 0%, rgba(246,243,236,.2) 35%, rgba(246,243,236,.94) 62%, #F6F3EC 100%)', swatch: '#FFFFFF' },
+      gold: { label: 'Gold', sub: 'Al Nassr', bg: '#071029', ink: '#FFFFFF', sub2: 'rgba(255,255,255,.74)', accent: '#FFD100', accent2: '#FFD100', onAccent: '#071029', card: 'rgba(12,24,56,.92)', line: 'rgba(255,255,255,.16)', tint: '#1A2F73', photo: '/_blob/3e54b3899f325766af27840538cd5f18', pos: 'center 10%', photoOp: '1', scrim: 'linear-gradient(180deg, rgba(7,16,41,.3) 0%, rgba(7,16,41,.25) 35%, rgba(7,16,41,.92) 62%, #071029 100%)', swatch: '#FFD100' }
+    };
+    var self = this, s = this.state;
+    var key = s.kit || this.props.theme || 'red';
+    var c = T[key] || T.red;
+    var t = { bg: c.bg, ink: c.ink, sub: c.sub2, accent: c.accent, accent2: c.accent2, onAccent: c.onAccent, card: c.card, line: c.line, tint: c.tint, photo: c.photo, pos: c.pos, photoOp: c.photoOp, scrim: c.scrim };
+    function multi(field, list) {
+      return list.map(function (p) {
+        var on = !!s[field][p[0]];
+        return { label: p[0], sub: p[1] || '', on: on ? 'true' : 'false', bg: on ? t.accent : t.card, color: on ? t.onAccent : t.ink, border: on ? t.accent : t.line,
+          pick: function () { var m = Object.assign({}, s[field]); m[p[0]] = !m[p[0]]; var u = {}; u[field] = m; self.setState(u); } };
+      });
+    }
+    var eras = multi('eras', [['Sporting', '2002–03'], ['United', 'the rise'], ['Madrid', '450 goals'], ['Juventus', 'Serie A'], ['Portugal', 'the captain'], ['Al Nassr', 'road to 1,000']]);
+    var kinds = multi('kinds', [['Free kicks'], ['Headers'], ['Bicycle kicks'], ['Solo runs'], ['Penalties'], ['Last-minute winners']]);
+    var kits = ['red', 'white', 'gold'].map(function (k) {
+      return { label: T[k].label, sub: T[k].sub, swatch: T[k].swatch, on: k === key ? 'true' : 'false', border: k === key ? t.accent2 : t.line, pick: function () { self.setState({ kit: k }); } };
+    });
+    var bars = [0, 1, 2, 3].map(function (i) { return { c: i < s.step ? t.accent : t.line }; });
+    var pickedEras = Object.keys(s.eras).filter(function (k) { return s.eras[k]; });
+    var pickedKinds = Object.keys(s.kinds).filter(function (k) { return s.kinds[k]; });
+    var profile = (pickedEras[0] || 'Every') + ' era. ' + (pickedKinds[0] || 'Every goal') + '. ' + c.label + ' kit.';
+    return { t: t, bars: bars, eras: eras, kinds: kinds, kits: kits, profile: profile,
+      s0: s.step === 0, s1: s.step === 1, s2: s.step === 2, s3: s.step === 3, s4: s.step === 4,
+      next: function () { self.setState({ step: Math.min(4, s.step + 1) }); } };
+  }
+}
+</script>
+</body>
+</html>
