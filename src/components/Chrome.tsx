@@ -19,7 +19,8 @@ export function TopBar() {
   const path = usePathname();
   const { theme, setTheme } = useFan();
   return (
-    <header className="wrap topbar">
+    <header className="topbar-shell">
+      <div className="wrap topbar">
       <Link href="/" className="display wordmark">EL BICHO</Link>
       <nav className="desk-links" aria-label="Main">
         {LINKS.map((l) => (
@@ -33,6 +34,7 @@ export function TopBar() {
             <span className="name">{THEMES[k].label}</span>
           </button>
         ))}
+      </div>
       </div>
     </header>
   );

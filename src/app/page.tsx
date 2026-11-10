@@ -58,7 +58,6 @@ export default function Home() {
               <Link className="btn" href="/call">Call the next match</Link>
               <Link className="btn ghost" href="/relive">Relive the greatest</Link>
             </div>
-            <div className="credit" style={{ marginTop: 14 }}>Photo: {t.credit}</div>
           </div>
         </div>
       </section>

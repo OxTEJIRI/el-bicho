@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Anton, Inter } from 'next/font/google';
+import Link from 'next/link';
 import './globals.css';
+import './ui.css';
 import { FanProvider } from '@/components/Fan';
 import { BottomNav, TopBar } from '@/components/Chrome';
 
@@ -21,8 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <FanProvider>
           <TopBar />
           <main>{children}</main>
-          <footer className="wrap muted" style={{ padding: '32px 16px 24px', fontSize: 12 }}>
-            Memories on Walrus · calls stamped on Sui through Tatum · Photos: Анна Нэсси (CC BY-SA 3.0), KANO PHOTO (CC BY-SA 2.0), Mehrdad Esfahani / Mehr News
+          <footer className="wrap foot">
+            <span>El Bicho · a fan project</span>
+            <Link href="/credits">Credits</Link>
           </footer>
           <BottomNav />
         </FanProvider>

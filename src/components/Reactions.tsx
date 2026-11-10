@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { playSfx, preloadSfx, SFX_FOR_REACTION } from '@/lib/sfx';
 import { useFan } from './Fan';
 
 export type Taste = { profile: string | null; top: string[]; reactions: number; picks: string[] };
@@ -14,7 +15,10 @@ export function Reactions({ momentId, onTaste }: { momentId: string; onTaste?: (
   const [status, setStatus] = useState('Every reaction teaches El Bicho your taste.');
   const [busy, setBusy] = useState(false);
 
+  useEffect(() => { preloadSfx(); }, []);
+
   async function send(reaction: string) {
+    playSfx(SFX_FOR_REACTION[reaction]);
     if (!fanId || busy) return;
     if (reaction === 'Remember' && !note.trim()) {
       setPicked('Remember');
