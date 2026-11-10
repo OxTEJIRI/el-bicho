@@ -11,7 +11,7 @@ Live: **https://el-bicho-cr7.vercel.app** · Built for the [Walrus × Tatum "Tot
 | Screen | What happens |
 |---|---|
 | **Home** | Live 985 / 1,000 counter. The 15 goals still to come are slots 986 to 1000, with the next one pulsing. The Oracle's call, your learned taste, and picks reordered for you. |
-| **Relive** | A Reels-style vertical feed of 17 official highlight videos (YouTube embeds). React or add a "where were you?" memory. Every reaction teaches El Bicho your taste. |
+| **Relive** | A full-screen, swipeable feed of 31 vertical YouTube Shorts and fan edits. React with sound (Wow, Siuuu, Awww) or add a "where were you?" memory. Every reaction teaches El Bicho your taste. |
 | **Call it** | Call whether he scores, how, and when. The call is saved to your Walrus memory and stamped with the latest Sui checkpoint read through Tatum's gRPC gateway. |
 | **The Oracle** | El Bicho's own call before each match. It recalls its own calibration lesson from Walrus before it speaks. |
 | **Road to 1,000** | Goals by shirt, the goal-1,000 date forecast, and a replay of 81 matches the Oracle had not seen. |
@@ -68,7 +68,8 @@ Code: [`src/lib/oracle.ts`](src/lib/oracle.ts), [`scripts/oracle-learn.ts`](scri
 - **By shirt:** Real Madrid 450, Manchester United 145, Juventus 101, Sporting CP 5 (published career figures); Portugal 146. **Al Nassr is still counting**, so it is derived: 985 minus the other five, currently 138, and it moves with every goal.
 - **Match log:** ESPN's public game log, 210 matches from June 2022 to October 2026 (`data/matches.json`, built by `scripts/build-matches.py`). **The log is incomplete.** Counting backwards from 985 puts goal 900 on 22 Aug 2024, but the real date was 5 Sep 2024. So it is used only for **scoring rates**, never to number goals, and the app never claims it knows which goal is which.
 - **Ask El Bicho cannot split goals by type** (headers, free kicks) because the log records goals per match, not per goal. It says so instead of guessing.
-- **Videos:** every YouTube embed was checked with YouTube oEmbed: it exists, allows embedding, and the uploader is a rights holder (club, league, FIFA, or a major broadcaster). Fan-channel uploads are excluded. The channel is credited on each card. Checker: [`scripts/check-videos.py`](scripts/check-videos.py).
+- **Videos:** vertical YouTube Shorts and edits, played through YouTube's own IFrame player, one at a time. YouTube's oEmbed lookup says a video is embeddable even when the uploader has switched embedding off (error 150), so oEmbed is not enough. The feed therefore also **skips any video that refuses to play in the viewer's browser**. Uploaders are credited on the Credits page. Checker: [`scripts/check-videos.py`](scripts/check-videos.py).
+- **Sounds:** the Wow, Siuuu, Awww and memory-chime reaction sounds were generated with Kokoro-82M (text-to-speech) and a synthesised chime ([`scripts/make-sounds.py`](scripts/make-sounds.py)). They are imitations, not recordings of anyone.
 - **Photos:** Wikimedia Commons, used under their licences:
   - Portugal: "Cristiano Ronaldo 2018.jpg" by Анна Нэсси, CC BY-SA 3.0.
   - Real Madrid: "Cristiano Ronaldo Madrid.jpg" by KANO PHOTO, CC BY-SA 2.0.
