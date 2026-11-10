@@ -21,7 +21,15 @@ function humanise(text: string): string {
     const mem = /memory="([^"]+)"/.exec(text)?.[1];
     return mem ? `You remembered "${mem}" on ${moment(get('moment') ?? '')}.` : `You reacted ${get('reaction')} to ${moment(get('moment') ?? '')}.`;
   }
-  if (text.startsWith('CALL')) { const parts = text.split(' · '); const pick = parts.slice(2, parts.length - 2).join(', ').replace(/how=|when=/g, ''); return `Your call for ${get('match')}: ${pick}, locked at Sui checkpoint ${get('locked_at_checkpoint')}.`; }
+  if (text.startsWith('CALL')) {
+    const parts = text.split(' · ');
+    const metadata = /^(accepted_at_server|checkpoint_observed|checkpoint_time|locked_at_checkpoint)=/;
+    const pick = parts.slice(2).filter((part) => !metadata.test(part)).join(', ').replace(/how=|when=/g, '');
+    const acceptedAt = get('accepted_at_server');
+    const checkpoint = get('checkpoint_observed') ?? get('locked_at_checkpoint');
+    const timing = acceptedAt ? `accepted by the server at ${acceptedAt}` : 'saved with an earlier checkpoint receipt';
+    return `Your call for ${get('match')}: ${pick}, ${timing}. Sui checkpoint reference: ${checkpoint ?? 'not recorded'} (context only).`;
+  }
   if (text.startsWith('PROFILE')) return `You told me your Ronaldo: ${get('eras')}; goals you love: ${get('kinds')}.`;
   return text.slice(0, 160);
 }

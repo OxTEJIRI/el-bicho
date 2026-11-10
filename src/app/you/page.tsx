@@ -23,8 +23,9 @@ export default function YouPage() {
 
   const n = taste?.reactions ?? 0;
   const rank = n >= 20 ? 'Captain' : n >= 10 ? 'First team' : n >= 3 ? 'Reserves' : 'Academy';
-  const cp = (c: string) => /locked_at_checkpoint=(\d+)/.exec(c)?.[1];
-  const pick = (c: string) => { const p = c.split(' · '); return p.slice(2, p.length - 2).join(', ').replace(/how=|when=/g, ''); };
+  const cp = (c: string) => /checkpoint_observed=(\d+)/.exec(c)?.[1] ?? /locked_at_checkpoint=(\d+)/.exec(c)?.[1];
+  const acceptedAt = (c: string) => /accepted_at_server=([^ ·]+)/.exec(c)?.[1];
+  const pick = (c: string) => c.split(' · ').slice(2).filter((part) => !/^(accepted_at_server|checkpoint_observed|checkpoint_time|locked_at_checkpoint)=/.test(part)).join(', ').replace(/how=|when=/g, '');
 
   return (
     <section className="wrap" style={{ maxWidth: 760, paddingTop: 8, paddingBottom: 24 }}>
@@ -46,8 +47,8 @@ export default function YouPage() {
             {calls.map((c, i) => (
               <li key={i} style={{ fontSize: 14, paddingBottom: 10, borderBottom: i < calls.length - 1 ? '1px solid var(--line)' : 0 }}>
                 <b>{pick(c)}</b> · {c.split(' · ')[1]?.replace('match=', '')}<br />
-                <span className="muted">Locked at Sui checkpoint {cp(c)}</span>{' '}
-                <a href={`https://suiscan.xyz/mainnet/checkpoint/${cp(c)}`} target="_blank" rel="noreferrer" style={{ color: 'var(--accent2)' }}>view</a>
+                <span className="muted">{acceptedAt(c) ? `Server accepted ${new Date(acceptedAt(c)!).toUTCString()}` : 'Earlier call · acceptance time unavailable'} · checkpoint reference {cp(c) ?? 'unavailable'}</span>{' '}
+                {cp(c) && <a href={`https://suiscan.xyz/mainnet/checkpoint/${cp(c)}`} target="_blank" rel="noreferrer" style={{ color: 'var(--accent2)' }}>view context</a>}
               </li>
             ))}
           </ul>

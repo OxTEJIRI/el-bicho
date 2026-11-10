@@ -70,7 +70,7 @@ export default function Home() {
             <span key={k} style={{ display: 'inline-flex', gap: 28 }}>
               <span><b>{CAREER_GOALS}</b> career goals</span>
               <span><b>{TARGET - CAREER_GOALS}</b> to go</span>
-              <span>Calls lock at kickoff · stamped on <b>Sui</b></span>
+              <span>Server closes calls at kickoff · Sui checkpoint shown as context</span>
               <span>Your reactions live in <b>Walrus</b> memory</span>
               <span>Be the first to call goal <b>{CAREER_GOALS + 1}</b></span>
             </span>

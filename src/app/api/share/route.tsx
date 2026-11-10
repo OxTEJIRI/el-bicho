@@ -8,7 +8,7 @@ const T = {
   gold: { bg: '#1A2F73', accent: '#FFD100', gold: '#FFD100', ink: '#FFFFFF', photo: 'alnassr', credit: 'Photo: Mehrdad Esfahani / Mehr News' },
 } as const;
 
-// A 9:16 story card for a locked call: GET /api/share?g=986&pick=...&cp=...&who=...&theme=red
+// A 9:16 story card for a call: GET /api/share?g=986&pick=...&cp=...&who=...&theme=red
 export async function GET(req: Request) {
   const u = new URL(req.url);
   const theme = (['red', 'white', 'gold'].includes(u.searchParams.get('theme') || '') ? u.searchParams.get('theme') : 'red') as keyof typeof T;
@@ -36,7 +36,7 @@ export async function GET(req: Request) {
             <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, color: '#fff', marginTop: 24, display: 'flex' }}>{pick.toUpperCase()}</div>
             <div style={{ display: 'flex', flexDirection: 'column', marginTop: 56, paddingTop: 36, borderTop: '3px solid rgba(255,255,255,0.4)', fontSize: 38, color: '#fff' }}>
               <div style={{ display: 'flex' }}>{who}</div>
-              <div style={{ display: 'flex', opacity: 0.8, marginTop: 8 }}>{cp ? `Stamped on Sui · checkpoint ${cp}` : 'Stamped on Sui'}</div>
+              <div style={{ display: 'flex', opacity: 0.8, marginTop: 8 }}>{cp ? `Sui checkpoint reference · ${cp} · context only` : 'No Sui checkpoint reference'}</div>
               <div style={{ display: 'flex', opacity: 0.7, marginTop: 8, fontSize: 30 }}>Call the next one at el-bicho-cr7.vercel.app</div>
               <div style={{ display: 'flex', flexDirection: 'column', opacity: 0.6, marginTop: 20, fontSize: 22 }}><div style={{ display: 'flex' }}>{t.credit}</div><div style={{ display: 'flex' }}>Fan project, not affiliated with Cristiano Ronaldo or his clubs</div></div>
             </div>

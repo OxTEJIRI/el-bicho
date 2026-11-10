@@ -25,7 +25,7 @@ export default function SharePage() {
     return (
       <section className="wrap" style={{ maxWidth: 640, paddingTop: 8 }}>
         <h1 className="display" style={{ fontSize: 'clamp(40px,8vw,72px)', margin: 0 }}>NO CALL YET</h1>
-        <p className="muted">Lock a call for his next match first. Your share card is built from it.</p>
+        <p className="muted">Submit a call for his next match first. Your share card is built from it.</p>
         <Link className="btn" href="/call">Make your call</Link>
       </section>
     );
@@ -63,7 +63,7 @@ export default function SharePage() {
           <input id="who" value={who} onChange={(e) => { setWho(e.target.value); try { localStorage.setItem('elbicho.handle', e.target.value); } catch { /* private mode */ } }} maxLength={24} placeholder="yourhandle" style={{ width: '100%', minHeight: 48, margin: '6px 0 14px', borderRadius: 14, border: '1px solid var(--line)', background: 'var(--digit)', color: 'var(--ink)', padding: '0 14px', font: 'inherit' }} />
           <button className="btn" style={{ width: '100%', minHeight: 52 }} onClick={share}>Share or save the card</button>
           {note && <p role="status" className="muted" style={{ fontSize: 13 }}>{note}</p>}
-          <p className="muted" style={{ fontSize: 13, marginBottom: 0 }}>The card shows your pick and the Sui checkpoint it was stamped at, so nobody can say you called it after the fact. He is on {CAREER_GOALS}.</p>
+          <p className="muted" style={{ fontSize: 13, marginBottom: 0 }}>The card summarizes your pick and includes a Sui checkpoint reference for context. It does not prove when the server accepted or stored the call. He is on {CAREER_GOALS}.</p>
         </div>
       </div>
     </section>

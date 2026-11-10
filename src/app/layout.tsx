@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: 'El Bicho · Road to 1,000',
-  description: 'Relive every Ronaldo goal, call the next one, and count down to 1,000. Memories on Walrus, calls stamped on Sui through Tatum.',
+  description: 'Relive every Ronaldo goal, call the next one, and count down to 1,000. Walrus memories, server-checked kickoff cutoffs, and Sui checkpoint references through Tatum.',
 };
 
 export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#0D0506' };

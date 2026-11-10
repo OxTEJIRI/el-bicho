@@ -6,7 +6,7 @@ import Link from 'next/link';
 type Crowd = {
   total: number | null; scores: number; blanks: number;
   how: Record<string, number>; when: Record<string, number>;
-  latest: { fan: string; checkpoint: string; scores: boolean; how: string | null; when: string | null }[];
+  latest: { fan: string; checkpoint: string; acceptedAt: string | null; scores: boolean; how: string | null; when: string | null }[];
 };
 
 export default function CrowdPage() {
@@ -50,14 +50,15 @@ export default function CrowdPage() {
             ))}
           </div>
           <div className="card" style={{ marginTop: 14 }}>
-            <div className="eyebrow">Latest calls · each stamped on Sui</div>
+            <div className="eyebrow">Latest calls · server accepted before kickoff</div>
             {c.latest.map((l, i) => (
               <div key={i} style={{ padding: '8px 0', borderBottom: '1px solid var(--line)', fontSize: 14 }}>
-                <b>Fan {l.fan}</b> · {l.scores ? `scores · ${l.how} · ${l.when}` : 'blanks'} <span className="muted">· checkpoint {l.checkpoint}</span>
+                <b>Fan {l.fan}</b> · {l.scores ? `scores · ${l.how} · ${l.when}` : 'blanks'}{' '}
+                <span className="muted">· {l.acceptedAt ? `accepted ${new Date(l.acceptedAt).toUTCString()}` : 'acceptance time unavailable'} · checkpoint reference {l.checkpoint}</span>
               </div>
             ))}
           </div>
-          <p className="muted" style={{ fontSize: 13 }}>Results get scored after the match, once his next fixture is played.</p>
+          <p className="muted" style={{ fontSize: 13 }}>The server closes calls at kickoff. Checkpoint references are context; they do not prove a call was written on-chain.</p>
         </>
       )}
     </section>

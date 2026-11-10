@@ -11,7 +11,7 @@ import { Crest, MatchTicket, useNextFixture } from '@/components/Match';
 const HOW = ['Header', 'Left foot', 'Right foot', 'Penalty', 'Free kick'];
 const WHEN = ['1st half', '2nd half'];
 
-type Receipt = { checkpoint: { sequence: string; digest: string; time: string }; blobId: string; text: string };
+type Receipt = { acceptedAt: string; checkpoint: { sequence: string; digest: string; time: string }; blobId: string; text: string };
 type Crowd = { total: number | null; scores?: number };
 
 export default function CallPage() {
@@ -25,7 +25,15 @@ export default function CallPage() {
   const [error, setError] = useState('');
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const [crowd, setCrowd] = useState<Crowd | null>(null);
+  const [kickoffPassed, setKickoffPassed] = useState(false);
   const oracle = useOracle();
+
+  useEffect(() => {
+    const update = () => setKickoffPassed(Date.now() >= Date.parse(f.kickoff));
+    update();
+    const timer = window.setInterval(update, 1000);
+    return () => window.clearInterval(timer);
+  }, [f.kickoff]);
 
   useEffect(() => { fetch('/api/crowd').then((r) => r.json()).then(setCrowd).catch(() => setCrowd({ total: null })); }, []);
 
@@ -33,8 +41,13 @@ export default function CallPage() {
   const fansPct = crowd?.total ? Math.round(((crowd.scores ?? 0) / crowd.total) * 100) : null;
   const pickText = score === 'No' ? 'He blanks' : `He scores · ${how} · ${when}`;
 
-  async function lock() {
+  async function submitCall() {
     if (!fanId || busy) return;
+    if (Date.now() >= Date.parse(f.kickoff)) {
+      setKickoffPassed(true);
+      setError('Calls are closed for this match.');
+      return;
+    }
     setBusy(true);
     setError('');
     try {
@@ -44,7 +57,7 @@ export default function CallPage() {
       setReceipt(data);
       try { localStorage.setItem('elbicho.lastCall', JSON.stringify({ pick: score === 'No' ? 'Blanks' : `${how} · ${when}`, cp: data.checkpoint.sequence, goal: CAREER_GOALS + 1, match: `${f.home.name} vs ${f.away.name}` })); } catch { /* private mode */ }
     } catch (e) {
-      setError((e as Error).message || 'Could not lock your call. Try again.');
+      setError((e as Error).message || 'Could not save your call. Try again.');
     } finally {
       setBusy(false);
     }
@@ -55,7 +68,7 @@ export default function CallPage() {
       <header className="page-head">
         <p className="kicker">Predict his next match</p>
         <h1 className="display page-title">Will Ronaldo score?</h1>
-        <p className="lede">Make your call before kickoff. It is saved to your Walrus memory and stamped with the latest Sui checkpoint, read through Tatum.</p>
+        <p className="lede">Submit before kickoff. The server enforces the cutoff and records when it accepted your call. Your call is saved to Walrus Memory; the Sui checkpoint shown below is context, not an onchain proof of the call.</p>
       </header>
 
       <div className="call-grid">
@@ -105,27 +118,29 @@ export default function CallPage() {
                   <div className="slip-yours">Your call</div>
                   <div className="slip-pick">{pickText}</div>
                 </div>
-                <button className="btn" onClick={lock} disabled={busy || !fanId}>{busy ? 'Locking…' : 'Lock my call'}</button>
+                <button className="btn" onClick={submitCall} disabled={busy || !fanId || kickoffPassed}>{busy ? 'Saving…' : kickoffPassed ? 'Calls are closed' : 'Submit my call'}</button>
               </div>
-              {busy && <p className="slip-note">Reading the latest Sui checkpoint through Tatum and writing to Walrus. This takes about 20 seconds.</p>}
+              {busy && <p className="slip-note">Checking the kickoff cutoff, reading the latest Sui checkpoint through Tatum, and writing to Walrus.</p>}
+              {kickoffPassed && <p role="status" className="slip-note">Calls are closed for this match.</p>}
               {error && <p role="alert" className="slip-error">{error}</p>}
             </div>
           ) : (
             <div className="receipt">
               <div className="receipt-top">
-                <span className="receipt-stamp display">Locked</span>
+                <span className="receipt-stamp display">Accepted before kickoff</span>
                 <div className="display receipt-pick">{pickText}</div>
                 <div className="muted">{f.home.name} vs {f.away.name} · goal {CAREER_GOALS + 1} is next</div>
               </div>
               <dl className="receipt-rows">
-                <dt>Sui checkpoint</dt><dd>{receipt.checkpoint.sequence}<small>{new Date(receipt.checkpoint.time).toUTCString()}</small></dd>
-                <dt>Digest</dt><dd className="mono">{receipt.checkpoint.digest}</dd>
+                <dt>Server accepted</dt><dd>{new Date(receipt.acceptedAt).toUTCString()}</dd>
+                <dt>Sui checkpoint observed</dt><dd>{receipt.checkpoint.sequence}<small>{new Date(receipt.checkpoint.time).toUTCString()} · context only</small></dd>
+                <dt>Checkpoint digest</dt><dd className="mono">{receipt.checkpoint.digest}</dd>
                 <dt>Walrus memory</dt><dd className="mono">{receipt.blobId}</dd>
               </dl>
               <div className="receipt-actions">
                 <Link className="btn" href="/share">Make my share card</Link>
-                <a className="btn ghost" href={`https://suiscan.xyz/mainnet/checkpoint/${receipt.checkpoint.sequence}`} target="_blank" rel="noreferrer">See it on Suiscan</a>
-                <button className="btn ghost" onClick={() => setReceipt(null)}>Change my call</button>
+                <a className="btn ghost" href={`https://suiscan.xyz/mainnet/checkpoint/${receipt.checkpoint.sequence}`} target="_blank" rel="noreferrer">View checkpoint reference</a>
+                {!kickoffPassed && <button className="btn ghost" onClick={() => setReceipt(null)}>Change my call</button>}
               </div>
             </div>
           )}

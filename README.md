@@ -2,7 +2,7 @@
 
 **Relive every Ronaldo goal. Call the next one. Count down to 1,000 together.**
 
-El Bicho is a fan app for Cristiano Ronaldo's road to 1,000 career goals. It remembers what each fan loves about his career using **Walrus Memory on mainnet**, and every call a fan makes is stamped with a real **Sui checkpoint read through Tatum**.
+El Bicho is a fan app for Cristiano Ronaldo's road to 1,000 career goals. It remembers what each fan loves about his career using **Walrus Memory on mainnet**. The server accepts calls only before the fixture's kickoff, records its acceptance time, and stores a **Sui checkpoint reference read through Tatum** as context. The checkpoint is not an onchain anchor or proof of the call.
 
 Live: **https://el-bicho-cr7.vercel.app** · Built for the [Walrus × Tatum "Total Recall" hackathon](https://tatum.io/hackathon/total-recall), **Track 1: Markets & Sports Prediction**.
 
@@ -12,13 +12,13 @@ Live: **https://el-bicho-cr7.vercel.app** · Built for the [Walrus × Tatum "Tot
 |---|---|
 | **Home** | Live 985 / 1,000 counter. The 15 goals still to come are slots 986 to 1000, with the next one pulsing. The Oracle's call, your learned taste, and picks reordered for you. |
 | **Relive** | A full-screen, swipeable feed of 31 vertical YouTube Shorts and fan edits. React with sound (Wow, Siuuu, Awww) or add a "where were you?" memory. Every reaction teaches El Bicho your taste. |
-| **Call it** | Call whether he scores, how, and when. The call is saved to your Walrus memory and stamped with the latest Sui checkpoint read through Tatum's gRPC gateway. |
+| **Call it** | Call whether he scores, how, and when. The server checks the fixture's kickoff time, then saves the call and server acceptance time to Walrus Memory. It also records the latest Sui checkpoint observed through Tatum as context, not as proof that the call was written on-chain. |
 | **The Oracle** | El Bicho's own call before each match. It recalls its own calibration lesson from Walrus before it speaks. |
 | **Road to 1,000** | Goals by shirt, the goal-1,000 date forecast, and a replay of 81 matches the Oracle had not seen. |
 | **Ask El Bicho** | A Q&A that answers only from sources it can name, and says so when it cannot answer. |
 | **The 1,000 Wall** | Fans leave a message for him. Messages are sealed in Walrus memory until goal 1,000; only the count is public. |
 | **The crowd** | What other fans called for the next match, read back from Walrus. |
-| **Share card** | A 9:16 "I called it" card with the Sui checkpoint, ready for X or WhatsApp. |
+| **Share card** | A 9:16 prediction card with a Sui checkpoint reference for context, ready for X or WhatsApp. It is not a proof receipt. |
 | **Welcome quiz** | 30 seconds: which Ronaldo is yours. Saved as a profile memory that counts double in your taste. |
 | **You** | Your rank (Academy to Captain), taste, calls with checkpoint links, and kit picker. |
 
@@ -28,10 +28,10 @@ Three kit themes, one tap each: **Red (Portugal, default)**, **White (Real Madri
 
 Walrus Memory (mainnet, through the Walrus Foundation managed relayer) is where the app learns.
 
-- **Per-fan memory:** each fan has their own namespace `elbicho-fan-<id>`: reactions (`REACTION · moment=… · reaction=… · tags=…`), calls (`CALL · match=… · scores · how=… · when=… · locked_at_checkpoint=…`) and the quiz profile (`PROFILE · eras=… · kinds=… · tags=…`).
+- **Per-fan memory:** each fan has their own namespace `elbicho-fan-<id>`: reactions (`REACTION · moment=… · reaction=… · tags=…`), calls (`CALL · match=… · scores · how=… · when=… · accepted_at_server=… · checkpoint_observed=…`) and the quiz profile (`PROFILE · eras=… · kinds=… · tags=…`).
 - **Taste learning:** after every reaction El Bicho recalls your memories, turns them into a profile ("Overhead goals. Big nights. The Madrid era.") and reorders the Relive feed and Home picks. Quiz answers count double.
 - **The Oracle's memory:** the Oracle's lessons live in `elbicho-oracle`. Before every call it recalls its latest calibration memory and applies it. If memory is unreachable it falls back to the raw forecast and says so on screen.
-- **Shared namespaces:** `elbicho-calls` (public copies of locked calls, for the crowd board) and `elbicho-wall` (sealed messages).
+- **Shared namespaces:** `elbicho-calls` (public copies of accepted calls, for the crowd board) and `elbicho-wall` (sealed messages).
 - **Ask El Bicho** recalls your own memories to answer "what's my taste" and "what did I react to".
 
 Code: [`src/lib/memory.ts`](src/lib/memory.ts), [`src/lib/taste.ts`](src/lib/taste.ts), [`src/lib/oracle-live.ts`](src/lib/oracle-live.ts), [`src/lib/ask.ts`](src/lib/ask.ts), [`src/app/api`](src/app/api).
@@ -40,7 +40,7 @@ Code: [`src/lib/memory.ts`](src/lib/memory.ts), [`src/lib/taste.ts`](src/lib/tas
 
 Tatum's Sui JSON-RPC endpoint returns 404 for `sui_*` methods, so El Bicho talks to Sui mainnet over **native gRPC** at `sui-mainnet-grpc.gateway.tatum.io:443`, with the API key sent as `x-api-key` metadata (`@mysten/sui` `SuiGrpcClient` + `@protobuf-ts/grpc-transport`). This runs on the server only.
 
-Every call reads the **latest Sui checkpoint** (sequence number, digest, timestamp) and stores it with the call, so each call is tied to a public point in Sui's history. The receipt, the share card and the You page link to the checkpoint on Suiscan.
+Before writing a call, the server checks that the fixture has not reached kickoff, reads the **latest Sui checkpoint** (sequence number, digest, timestamp), checks the cutoff again, then records the server acceptance time and checkpoint reference with the Walrus memory. The checkpoint can be inspected on Suiscan, but the app does not anchor the call data to that checkpoint; it is context rather than cryptographic proof of when the call was stored.
 
 Code: [`src/lib/sui.ts`](src/lib/sui.ts).
 
