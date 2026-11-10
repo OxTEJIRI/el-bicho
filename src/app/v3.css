@@ -40,8 +40,8 @@ body {
 .ticket-vs { display: grid; justify-items: center; gap: 4px; padding: 0 4px; }
 .ticket-vs .display { font-size: clamp(30px, 9vw, 52px); line-height: 1; color: var(--accent2); }
 .ticket-venue { margin-top: 12px; font-size: 13px; color: var(--sub); }
-.crest { display: inline-grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #fff, #e9e9e9); padding: 9%; box-shadow: 0 10px 26px -12px rgba(0,0,0,.8), 0 0 0 3px color-mix(in srgb, var(--ink) 10%, transparent); flex: none; }
-.crest img { width: 100%; height: 100%; object-fit: contain; }
+.crest { display: inline-grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #fff, #e9e9e9); padding: 0; box-shadow: 0 10px 26px -12px rgba(0,0,0,.8), 0 0 0 3px color-mix(in srgb, var(--ink) 10%, transparent); flex: none; }
+.crest img { width: 80%; height: 80%; object-fit: contain; }
 .ticket-stub { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; background: color-mix(in srgb, var(--accent) 16%, transparent); border-top: 2px dashed color-mix(in srgb, var(--ink) 22%, transparent); }
 .ticket-stub::before, .ticket-stub::after { content: ''; position: absolute; top: -12px; width: 22px; height: 22px; border-radius: 50%; background: var(--bg); border: 1px solid var(--line); }
 .ticket-stub::before { left: -12px; } .ticket-stub::after { right: -12px; }
@@ -240,12 +240,12 @@ body {
 /* ---------- desktop ---------- */
 @media (min-width: 900px) {
   .page { padding-top: 26px; }
-  .ticket { grid-template-columns: 1fr 230px; }
+  .ticket { grid-template-columns: 1fr 290px; }
   .ticket-main { padding: 24px 24px 22px; }
   .ticket-stub { flex-direction: column; justify-content: center; border-top: 0; border-left: 2px dashed color-mix(in srgb, var(--ink) 22%, transparent); }
   .ticket-stub::before, .ticket-stub::after { left: -12px; right: auto; }
   .ticket-stub::before { top: -12px; } .ticket-stub::after { top: auto; bottom: -12px; }
-  .ticket-clock { font-size: 34px; flex-wrap: wrap; justify-content: center; }
+  .ticket-clock { font-size: 32px; flex-wrap: nowrap; justify-content: center; }
   .call-grid { grid-template-columns: minmax(0, 1fr) 360px; gap: 22px; align-items: start; }
   .call-side { position: sticky; top: 84px; }
   .slip { padding: 22px; }
