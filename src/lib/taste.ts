@@ -25,7 +25,8 @@ export function tasteFrom(texts: string[]) {
   for (const t of texts) {
     const m = /tags=([a-z,-]+)/.exec(t);
     if (!m || /reaction=none/.test(t)) continue;
-    for (const tag of m[1].split(',')) score[tag] = (score[tag] || 0) + 1;
+    const weight = t.startsWith('PROFILE') ? 2 : 1; // what a fan tells us counts double a single reaction
+    for (const tag of m[1].split(',')) score[tag] = (score[tag] || 0) + weight;
   }
   const top = Object.entries(score).sort((a, b) => b[1] - a[1]).map(([k]) => k);
   const words = top.slice(0, 3).map((k) => LABELS[k] || k);

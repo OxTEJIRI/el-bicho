@@ -121,6 +121,24 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="wrap" style={{ marginTop: 28 }}>
+        <h2 className="display" style={{ margin: '0 0 12px', fontSize: 30 }}>MORE FROM EL BICHO</h2>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+          {[
+            ['/ask', 'Ask El Bicho', 'Ask about any goal, his form, or your own memories.'],
+            ['/wall', 'The 1,000 Wall', 'Leave him a message. It opens when he scores goal 1,000.'],
+            ['/crowd', 'What fans called', 'See how the crowd thinks he scores next.'],
+            ['/welcome', 'Teach it your Ronaldo', '30 seconds. El Bicho remembers it.'],
+            ['/you', 'You', 'Your rank, your taste, your calls and your share cards.'],
+          ].map(([href, t, d]) => (
+            <Link key={href} href={href} className="card" style={{ textDecoration: 'none', display: 'block' }}>
+              <div className="display" style={{ fontSize: 24 }}>{t.toUpperCase()}</div>
+              <div className="muted" style={{ fontSize: 14, marginTop: 4 }}>{d}</div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <section className="wrap" style={{ marginTop: 22 }}>
         <div className="card">
           <div className="eyebrow">Relive · react to teach El Bicho</div>

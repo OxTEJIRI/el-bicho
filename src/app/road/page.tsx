@@ -5,7 +5,7 @@ import { ForecastCard, Replay, useOracle } from '@/components/Oracle';
 
 export default function RoadPage() {
   const oracle = useOracle();
-  const max = Math.max(...ERAS.map((e) => e.goals ?? 0));
+  const max = Math.max(...ERAS.map((e) => e.goals));
   return (
     <section className="wrap" style={{ paddingTop: 8, paddingBottom: 24 }}>
       <div className="eyebrow" style={{ color: 'var(--accent2)' }}>The road</div>
@@ -20,15 +20,15 @@ export default function RoadPage() {
             {ERAS.map((e) => (
               <div key={e.club} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span style={{ width: 10, height: 30, borderRadius: 4, background: e.color, border: '1px solid var(--line)' }} />
-                <span style={{ width: 150, fontWeight: 800 }}>{e.club}</span>
+                <span style={{ width: 150, fontWeight: 800 }}>{e.club}{e.counting && <span className="live" style={{ marginLeft: 6, padding: '2px 6px', fontSize: 9 }}>COUNTING</span>}</span>
                 <span style={{ flex: 1, height: 10, borderRadius: 5, background: 'var(--line)', overflow: 'hidden' }}>
-                  <span style={{ display: 'block', height: '100%', width: e.goals ? `${(e.goals / max) * 100}%` : '0%', background: 'var(--accent)' }} />
+                  <span style={{ display: 'block', height: '100%', width: `${(e.goals / max) * 100}%`, background: 'var(--accent)' }} />
                 </span>
-                <span className="display" style={{ width: 56, textAlign: 'right', fontSize: 24 }}>{e.goals ?? '—'}</span>
+                <span className="display" style={{ width: 56, textAlign: 'right', fontSize: 24 }}>{e.goals}{e.counting ? '+' : ''}</span>
               </div>
             ))}
           </div>
-          <p className="muted" style={{ fontSize: 12, marginBottom: 0 }}>Portugal and Al Nassr totals are being verified before they go up.</p>
+          <p className="muted" style={{ fontSize: 12, marginBottom: 0 }}>Al Nassr is still counting: it is his career total minus the other four shirts, so it moves with every goal. Portugal: 146.</p>
         </div>
         <ForecastCard data={oracle.data} />
       </div>

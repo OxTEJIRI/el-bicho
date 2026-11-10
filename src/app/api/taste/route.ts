@@ -10,7 +10,7 @@ export async function GET(req: Request) {
   if (!fanId) return NextResponse.json({ error: 'Missing fan id.' }, { status: 400 });
   try {
     const ns = fanNamespace(fanId);
-    const reactions = (await recall('reactions to Ronaldo moments', ns, 30)).map((r) => r.text).filter((t) => t.startsWith('REACTION'));
+    const reactions = (await recall('reactions and taste for Ronaldo moments', ns, 30)).map((r) => r.text).filter((t) => t.startsWith('REACTION') || t.startsWith('PROFILE'));
     const calls = (await recall('calls for the next match', ns, 10)).map((r) => r.text).filter((t) => t.startsWith('CALL'));
     return NextResponse.json({ taste: tasteFrom(reactions), calls });
   } catch (e) {

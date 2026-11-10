@@ -20,8 +20,10 @@ export async function POST(req: Request) {
     const cp = await latestCheckpoint();
     const pick = body.score === 'No' ? 'blank' : `scores · how=${body.how} · when=${body.when}`;
     const text = `CALL · match=${match} · ${pick} · locked_at_checkpoint=${cp.sequence} · checkpoint_time=${cp.time}`;
-    const mem = await remember(text, fanNamespace(fanId));
-    return NextResponse.json({ ok: true, checkpoint: cp, blobId: mem.blobId, text });
+    const publicText = `PUBLICCALL · match=${match} · fan=${fanId.slice(0, 6)} · ${pick} · checkpoint=${cp.sequence}`;
+    // both writes run at once, so the fan waits for one Walrus write, not two
+    const [mem] = await Promise.all([remember(text, fanNamespace(fanId)), remember(publicText, 'elbicho-calls').catch(() => null)]);
+    return NextResponse.json({ ok: true, checkpoint: cp, blobId: mem.blobId, text, pick });
   } catch (e) {
     return NextResponse.json({ error: 'Could not lock your call right now. Try again.', detail: String((e as Error).message).slice(0, 160) }, { status: 502 });
   }

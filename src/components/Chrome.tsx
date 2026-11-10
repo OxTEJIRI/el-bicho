@@ -10,6 +10,9 @@ const LINKS = [
   { href: '/relive', label: 'Relive' },
   { href: '/road', label: 'Road to 1,000' },
   { href: '/call', label: 'Call it' },
+  { href: '/ask', label: 'Ask' },
+  { href: '/wall', label: '1,000 Wall' },
+  { href: '/you', label: 'You' },
 ];
 
 export function TopBar() {
@@ -48,7 +51,7 @@ export function BottomNav() {
       <Link href="/relive" aria-current={cur('/relive')}><Icon d="M6 3h12v18H6zM10 9l5 3-5 3z" />Relive</Link>
       <Link href="/call" className="fab" aria-label="Call it" aria-current={cur('/call')}>CALL</Link>
       <Link href="/road" aria-current={cur('/road')}><Icon d="M4 20l5-6 4 3 7-10M15 7h5v5" />Road</Link>
-      <a href="https://memory.walrus.xyz/dashboard" target="_blank" rel="noreferrer"><Icon d="M12 3l8 4v6c0 4.5-3.5 7.5-8 9-4.5-1.5-8-4.5-8-9V7z" />Memory</a>
+      <Link href="/ask" aria-current={cur('/ask')}><Icon d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" />Ask</Link>
     </nav>
   );
 }

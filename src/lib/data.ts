@@ -4,13 +4,19 @@
 export const CAREER_GOALS = 985; // ESPN goal tracker, after the hat-trick vs Al Kholood (2026)
 export const TARGET = 1000;
 
-export const ERAS: { club: string; goals: number | null; color: string }[] = [
-  { club: 'Real Madrid', goals: 450, color: '#FFFFFF' },
-  { club: 'Manchester United', goals: 145, color: '#DA020E' },
-  { club: 'Portugal', goals: null, color: '#C8102E' },
-  { club: 'Al Nassr', goals: null, color: '#FFD100' },
-  { club: 'Juventus', goals: 101, color: '#111111' },
-  { club: 'Sporting CP', goals: 5, color: '#00A650' },
+// Career goals by shirt. Real Madrid 450, Manchester United 145, Juventus 101 and Sporting CP 5 are published career
+// figures; Portugal is 146 (supplied by the owner). Al Nassr is still counting, so it is derived: the official career
+// total minus the other four, and it moves up with every goal he scores.
+const OTHERS = { madrid: 450, united: 145, juventus: 101, sporting: 5, portugal: 146 };
+export const AL_NASSR_GOALS = CAREER_GOALS - Object.values(OTHERS).reduce((a, b) => a + b, 0);
+
+export const ERAS: { club: string; goals: number; color: string; counting?: boolean }[] = [
+  { club: 'Real Madrid', goals: OTHERS.madrid, color: '#FFFFFF' },
+  { club: 'Portugal', goals: OTHERS.portugal, color: '#C8102E' },
+  { club: 'Manchester United', goals: OTHERS.united, color: '#DA020E' },
+  { club: 'Al Nassr', goals: AL_NASSR_GOALS, color: '#FFD100', counting: true },
+  { club: 'Juventus', goals: OTHERS.juventus, color: '#111111' },
+  { club: 'Sporting CP', goals: OTHERS.sporting, color: '#00A650' },
 ];
 
 export const MILESTONES = [

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { useFan } from '@/components/Fan';
 import { CAREER_GOALS, NEXT_MATCH } from '@/lib/data';
@@ -30,6 +31,7 @@ export default function CallPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setReceipt(data);
+      try { localStorage.setItem('elbicho.lastCall', JSON.stringify({ pick: score === 'No' ? 'Blanks' : `${how} · ${when}`, cp: data.checkpoint.sequence, goal: CAREER_GOALS + 1 })); } catch { /* private mode */ }
     } catch (e) {
       setError((e as Error).message || 'Could not lock your call. Try again.');
     } finally {
@@ -73,6 +75,7 @@ export default function CallPage() {
           </dl>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 16 }}>
             <a className="btn ghost" href={`https://suiscan.xyz/mainnet/checkpoint/${receipt.checkpoint.sequence}`} target="_blank" rel="noreferrer">View checkpoint on Suiscan</a>
+            <Link className="btn" href="/share">Make my share card</Link>
             <button className="btn ghost" onClick={() => setReceipt(null)}>Change before kickoff</button>
           </div>
         </div>
