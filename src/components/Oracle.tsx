@@ -28,10 +28,11 @@ export function OracleCard({ data, error }: { data: OracleData | null; error: bo
         <div className="display" style={{ fontSize: 30, marginTop: 8 }}>{error ? 'OFFLINE' : 'RECALLING…'}</div>
       ) : (
         <>
-          <div className="display" style={{ fontSize: 40, lineHeight: 1, marginTop: 8 }}>{data.call.toUpperCase()} · {Math.round(data.p * 100)}%</div>
+          <div className="display" style={{ fontSize: 40, lineHeight: 1, marginTop: 8 }}>{Math.abs(data.p - 0.5) < 0.05 ? 'TOSS-UP' : data.call.toUpperCase()}</div>
+          <div style={{ fontWeight: 800, marginTop: 4 }}>{Math.round(data.p * 100)}% chance he scores</div>
           <p style={{ margin: '8px 0 0', fontSize: 14, opacity: .92 }}>
             {data.fromMemory
-              ? `Recalled from Walrus memory (${data.source?.asof}): its raw forecast was overconfident, so it pulls ${Math.round(data.raw * 100)}% toward 50/50 and says ${Math.round(data.p * 100)}%.`
+              ? `Recalled from Walrus memory (${data.source?.asof}): its raw forecast was overconfident, so it pulled its raw ${Math.round(data.raw * 100)}% toward 50/50 and settled on ${Math.round(data.p * 100)}%.`
               : 'Memory is unreachable right now, so this is the raw forecast.'}
           </p>
           <ul style={{ margin: '8px 0 0', paddingLeft: 18, fontSize: 13, opacity: .92 }}>
