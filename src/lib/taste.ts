@@ -13,6 +13,11 @@ const LABELS: Record<string, string> = {
   madrid: 'the Madrid era',
   portugal: 'Portugal nights',
   'al-nassr': 'the Al Nassr years',
+  'long-range': 'long-range strikes',
+  united: 'the Manchester United years',
+  juventus: 'the Juventus years',
+  final: 'finals',
+  compilation: 'the full highlight reels',
 };
 
 export function tasteFrom(texts: string[]) {

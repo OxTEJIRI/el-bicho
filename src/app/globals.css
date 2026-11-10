@@ -114,3 +114,30 @@ button { font: inherit; color: inherit; }
   .pick { width: auto; height: auto; aspect-ratio: 4 / 5; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* Relive: vertical snap-scroll video feed */
+.reels-wrap { position: relative; max-width: 440px; margin: 0 auto; }
+.reels-filters { position: absolute; z-index: 5; top: 8px; left: 0; right: 0; display: flex; gap: 8px; overflow-x: auto; padding: 0 12px; scrollbar-width: none; }
+.reels-filters .chip { flex: none; background: var(--glass); backdrop-filter: none; }
+.reels { height: calc(100dvh - 70px - 84px); overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; overscroll-behavior: contain; }
+.reels::-webkit-scrollbar { display: none; }
+.reel { position: relative; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; overflow: hidden; background: var(--tint); color: #fff; }
+.reel-seven { position: absolute; right: -24px; top: 90px; font-size: 300px; line-height: .8; color: transparent; -webkit-text-stroke: 2px var(--stroke); pointer-events: none; }
+.reel-top { position: absolute; left: 0; right: 0; top: 0; height: 120px; background: linear-gradient(180deg, rgba(0,0,0,.55), transparent); pointer-events: none; }
+.reel-bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 58%; background: linear-gradient(0deg, rgba(0,0,0,.92) 30%, transparent); pointer-events: none; }
+.reel-video { position: absolute; left: 0; right: 0; top: 18%; aspect-ratio: 16 / 9; background: #000; border-block: 1px solid rgba(255,255,255,.2); }
+.reel-video iframe, .reel-play { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; background: #000; cursor: pointer; }
+.reel-play img { width: 100%; height: 100%; object-fit: cover; opacity: .9; }
+.reel-playbtn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 50%; background: rgba(0,0,0,.55); border: 2px solid rgba(255,255,255,.85); color: #fff; display: flex; align-items: center; justify-content: center; }
+.reel-info { position: absolute; left: 16px; right: 76px; bottom: 16px; }
+.reel-credit { display: inline-block; margin-top: 8px; font-size: 11px; opacity: .75; color: #fff; }
+.reel-status { margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--accent2); min-height: 16px; }
+.reel-sheet { margin-top: 10px; background: rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.25); border-radius: 16px; padding: 10px; display: grid; gap: 8px; }
+.reel-sheet textarea { width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #fff; padding: 10px; font: inherit; }
+.reel-rail { position: absolute; right: 12px; bottom: 16px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.reel-r { width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); background: rgba(0,0,0,.5); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .5px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; }
+.reel-r.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+@media (min-width: 900px) {
+  .reels-wrap { margin: 8px auto 0; }
+  .reels { height: min(780px, calc(100dvh - 110px)); border-radius: 28px; }
+}

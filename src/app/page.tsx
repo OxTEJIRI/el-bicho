@@ -27,8 +27,8 @@ export default function Home() {
   }, [fanId]);
 
   const picks = useMemo(() => {
-    if (!taste?.picks?.length) return MOMENTS;
-    return taste.picks.map((id) => MOMENTS.find((m) => m.id === id)!).filter(Boolean);
+    if (!taste?.picks?.length) return MOMENTS.slice(0, 4);
+    return taste.picks.map((id) => MOMENTS.find((m) => m.id === id)!).filter(Boolean).slice(0, 4);
   }, [taste]);
 
   const slots = Array.from({ length: TARGET - CAREER_GOALS }, (_, i) => CAREER_GOALS + 1 + i);
