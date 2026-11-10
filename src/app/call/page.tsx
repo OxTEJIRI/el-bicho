@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useFan } from '@/components/Fan';
 import { CAREER_GOALS, NEXT_MATCH } from '@/lib/data';
+import { OracleCard, useOracle } from '@/components/Oracle';
 
 const HOW = ['Header', 'Left foot', 'Right foot', 'Penalty', 'Free kick'];
 const WHEN = ['1st half', '2nd half'];
@@ -17,6 +18,7 @@ export default function CallPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [receipt, setReceipt] = useState<Receipt | null>(null);
+  const oracle = useOracle();
 
   async function lock() {
     if (!fanId || busy) return;
@@ -49,6 +51,8 @@ export default function CallPage() {
       <div className="eyebrow" style={{ color: 'var(--accent2)' }}>Goal {CAREER_GOALS + 1} is next</div>
       <h1 className="display" style={{ fontSize: 'clamp(44px,8vw,88px)', margin: '6px 0 0', lineHeight: .95 }}>CALL IT</h1>
       <p className="muted" style={{ margin: '8px 0 18px' }}>{NEXT_MATCH.home} vs {NEXT_MATCH.away ?? 'TBC'} · calls lock at kickoff and get stamped with the current Sui checkpoint, read through Tatum.</p>
+
+      <div style={{ marginBottom: 14 }}><OracleCard data={oracle.data} error={oracle.error} /></div>
 
       {!receipt ? (
         <div className="card">

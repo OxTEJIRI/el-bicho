@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useFan } from '@/components/Fan';
 import { Reactions, type Taste } from '@/components/Reactions';
+import { OracleCard, useOracle } from '@/components/Oracle';
 import { CAREER_GOALS, MOMENTS, NEXT_MATCH, TARGET } from '@/lib/data';
 import { THEMES } from '@/lib/themes';
 
@@ -12,6 +13,7 @@ export default function Home() {
   const t = THEMES[theme];
   const [n, setN] = useState(CAREER_GOALS - 45);
   const [taste, setTaste] = useState<Taste | null>(null);
+  const oracle = useOracle();
 
   useEffect(() => {
     if (n >= CAREER_GOALS) return;
@@ -89,10 +91,13 @@ export default function Home() {
           <p className="muted" style={{ margin: '8px 0 0' }}>{NEXT_MATCH.kickoff ? new Date(NEXT_MATCH.kickoff).toUTCString() : 'Fixture confirmed after the international break.'}</p>
           <Link className="btn" href="/call" style={{ marginTop: 14, width: '100%' }}>Make your call</Link>
         </div>
-        <div className="card" style={{ background: 'var(--accent)', color: 'var(--on-accent)', border: 0 }}>
-          <div className="eyebrow" style={{ color: 'inherit', opacity: .85 }}>Your Ronaldo</div>
-          <div className="display" style={{ fontSize: 30, lineHeight: 1.05, marginTop: 8 }}>{taste?.profile ?? 'React to a moment to start.'}</div>
-          <p style={{ margin: '8px 0 0', fontSize: 14, opacity: .9 }}>Learned from your reactions, kept in your Walrus memory, so it follows you anywhere.</p>
+        <div style={{ display: 'grid', gap: 14 }}>
+          <OracleCard data={oracle.data} error={oracle.error} />
+          <div className="card">
+            <div className="eyebrow">Your Ronaldo</div>
+            <div className="display" style={{ fontSize: 26, lineHeight: 1.05, marginTop: 8, color: 'var(--accent)' }}>{taste?.profile ?? 'React to a moment to start.'}</div>
+            <p className="muted" style={{ margin: '8px 0 0', fontSize: 14 }}>Learned from your reactions, kept in your Walrus memory, so it follows you anywhere.</p>
+          </div>
         </div>
       </section>
 

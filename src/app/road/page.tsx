@@ -1,6 +1,10 @@
+'use client';
+
 import { CAREER_GOALS, ERAS, MILESTONES, TARGET } from '@/lib/data';
+import { ForecastCard, Replay, useOracle } from '@/components/Oracle';
 
 export default function RoadPage() {
+  const oracle = useOracle();
   const max = Math.max(...ERAS.map((e) => e.goals ?? 0));
   return (
     <section className="wrap" style={{ paddingTop: 8, paddingBottom: 24 }}>
@@ -26,12 +30,14 @@ export default function RoadPage() {
           </div>
           <p className="muted" style={{ fontSize: 12, marginBottom: 0 }}>Portugal and Al Nassr totals are being verified before they go up.</p>
         </div>
-        <div className="card" style={{ background: 'var(--accent)', color: 'var(--on-accent)', border: 0 }}>
-          <div className="eyebrow" style={{ color: 'inherit', opacity: .85 }}>Goal 1,000 forecast</div>
-          <div className="display" style={{ fontSize: 40, lineHeight: 1, marginTop: 8 }}>LEARNING</div>
-          <p style={{ margin: '8px 0 0', opacity: .9 }}>The forecast starts once the next fixtures are in, then narrows after every match. Each update is saved to Walrus, so you can watch it learn.</p>
-        </div>
+        <ForecastCard data={oracle.data} />
       </div>
+
+      {oracle.data && (
+        <div style={{ marginTop: 20 }}>
+          <Replay data={oracle.data} />
+        </div>
+      )}
 
       <h2 className="display" style={{ fontSize: 34, margin: '30px 0 14px' }}>MILESTONES</h2>
       <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 14, gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))' }}>
