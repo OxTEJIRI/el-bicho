@@ -20,25 +20,63 @@ export function useOracle() {
 
 const month = (iso: string) => new Date(iso + 'T12:00:00Z').toLocaleDateString('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' });
 
-export function OracleCard({ data, error }: { data: OracleData | null; error: boolean }) {
+export const verdict = (p: number) => (p >= 0.65 ? 'Backing him' : p >= 0.55 ? 'Leans goal' : p > 0.45 ? 'Toss-up' : p > 0.35 ? 'Leans blank' : 'Tough night');
+
+// A half-dial from 0% to 100%: the needle is the Oracle's chance that he scores.
+function Gauge({ p }: { p: number | null }) {
+  const [shown, setShown] = useState(0);
+  useEffect(() => { if (p !== null) { const id = requestAnimationFrame(() => setShown(p)); return () => cancelAnimationFrame(id); } }, [p]);
+  const R = 90, cx = 110, cy = 104;
+  const pt = (v: number, r = R) => { const a = Math.PI * (1 - v); return [cx + r * Math.cos(a), cy - r * Math.sin(a)]; };
+  const arc = (from: number, to: number) => { const [x1, y1] = pt(from); const [x2, y2] = pt(to); return `M${x1.toFixed(1)} ${y1.toFixed(1)} A${R} ${R} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`; };
+  const ticks = Array.from({ length: 21 }, (_, i) => i / 20);
   return (
-    <div className="card" style={{ background: 'var(--accent)', color: 'var(--on-accent)', border: 0 }}>
-      <div className="eyebrow" style={{ color: 'inherit', opacity: .85 }}>The Oracle · El Bicho&apos;s own call</div>
-      {!data ? (
-        <div className="display" style={{ fontSize: 30, marginTop: 8 }}>{error ? 'OFFLINE' : 'RECALLING…'}</div>
-      ) : (
-        <>
-          <div className="display" style={{ fontSize: 40, lineHeight: 1, marginTop: 8 }}>{Math.abs(data.p - 0.5) < 0.05 ? 'TOSS-UP' : data.call.toUpperCase()}</div>
-          <div style={{ fontWeight: 800, marginTop: 4 }}>{Math.round(data.p * 100)}% chance he scores</div>
-          <p style={{ margin: '8px 0 0', fontSize: 14, opacity: .92 }}>
+    <svg viewBox="0 0 220 120" className="gauge" role="img" aria-label={p === null ? 'Loading the forecast' : `${Math.round(p * 100)}% chance he scores`}>
+      <path d={arc(0, 1)} className="gauge-track" />
+      <path d={arc(0.45, 0.55)} className="gauge-zone" />
+      {p !== null && <path d={arc(0, Math.max(0.001, shown))} className="gauge-fill" />}
+      {ticks.map((t, i) => { const major = i % 5 === 0; const [x1, y1] = pt(t, R - 16); const [x2, y2] = pt(t, major ? R - 28 : R - 22); return <line key={t} x1={x1} y1={y1} x2={x2} y2={y2} className={'gauge-tick' + (major ? ' major' : '')} />; })}
+      <g className="gauge-needle" style={{ transform: `rotate(${-90 + shown * 180}deg)`, transformOrigin: `${cx}px ${cy}px` }}>
+        <line x1={cx} y1={cy - R + 30} x2={cx} y2={cy - R - 8} />
+      </g>
+      <text x={cx - R} y={cy + 14} className="gauge-end">0</text>
+      <text x={cx + R} y={cy + 14} className="gauge-end" textAnchor="end">100</text>
+    </svg>
+  );
+}
+
+export function OracleCard({ data, error, opponent }: { data: OracleData | null; error: boolean; opponent?: string }) {
+  const p = data ? data.p : null;
+  return (
+    <div className="oracle">
+      <div className="oracle-head">
+        <span className="oracle-badge" aria-hidden="true">O</span>
+        <div>
+          <div className="oracle-title">The Oracle</div>
+          <div className="oracle-sub">El Bicho&apos;s own call{opponent ? ` for ${opponent}` : ''}</div>
+        </div>
+      </div>
+      <div className="oracle-dial">
+        <Gauge p={p} />
+        <div className="oracle-read">
+          <span className="display oracle-pct">{p === null ? (error ? '--' : '··') : Math.round(p * 100)}<small>%</small></span>
+          <span className="oracle-verdict">{p === null ? (error ? 'Offline' : 'Recalling memory') : verdict(p)}</span>
+        </div>
+      </div>
+      <div className="oracle-split" aria-hidden={p === null}>
+        <span><b>Scores</b> {p === null ? '--' : Math.round(p * 100) + '%'}</span>
+        <span><b>Blanks</b> {p === null ? '--' : 100 - Math.round(p * 100) + '%'}</span>
+      </div>
+      {data && (
+        <details className="oracle-why">
+          <summary>How it decided</summary>
+          <p>
             {data.fromMemory
-              ? `Recalled from Walrus memory (${data.source?.asof}): its raw forecast was overconfident, so it pulled its raw ${Math.round(data.raw * 100)}% toward 50/50 and settled on ${Math.round(data.p * 100)}%.`
+              ? `It recalled its own lesson from Walrus memory (${data.source?.asof}): past forecasts were overconfident. So it pulled its raw ${Math.round(data.raw * 100)}% toward 50/50 and settled on ${Math.round(data.p * 100)}%.`
               : 'Memory is unreachable right now, so this is the raw forecast.'}
           </p>
-          <ul style={{ margin: '8px 0 0', paddingLeft: 18, fontSize: 13, opacity: .92 }}>
-            {data.reasons.map((r) => <li key={r}>{r}</li>)}
-          </ul>
-        </>
+          <ul>{data.reasons.map((r) => <li key={r}>{r}</li>)}</ul>
+        </details>
       )}
     </div>
   );
@@ -56,43 +94,6 @@ export function ForecastCard({ data }: { data: OracleData | null }) {
           </p>
         </>
       )}
-    </div>
-  );
-}
-
-export function Replay({ data }: { data: OracleData }) {
-  const b = data.backtest;
-  const pts = b.rolling;
-  const W = 600, H = 150, lo = 0.18, hi = 0.34;
-  const x = (i: number) => (i / Math.max(1, pts.length - 1)) * W;
-  const y = (v: number) => H - ((Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo)) * H;
-  const path = (k: 'learned' | 'raw') => pts.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(p[k]).toFixed(1)}`).join(' ');
-  const row = (label: string, v: number, strong?: boolean) => (
-    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--line)', fontWeight: strong ? 800 : 600 }}>
-      <span>{label}</span><span className="display" style={{ fontSize: 22, color: strong ? 'var(--accent)' : 'var(--ink)' }}>{v.toFixed(3)}</span>
-    </div>
-  );
-  return (
-    <div className="card">
-      <div className="eyebrow">What if it knew? · replay of {b.testMatches} matches it had not seen</div>
-      <p className="muted" style={{ margin: '6px 0 12px', fontSize: 14 }}>
-        El Bicho learned from his first {b.trainMatches} matches, kept one lesson in Walrus memory, then forecast the next {b.testMatches} using only games played before each one. Error score (lower is better):
-      </p>
-      {row('A coin flip (always 50%)', b.test.brierCoin)}
-      {row('Oracle with no memory', b.test.brierRaw)}
-      {row('Oracle with its memory', b.test.brierLearned, true)}
-      <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="150" role="img" aria-label="Rolling error score of the Oracle with and without memory" style={{ display: 'block', marginTop: 14 }}>
-        <line x1="0" x2={W} y1={y(0.25)} y2={y(0.25)} stroke="var(--line)" strokeDasharray="4 4" />
-        <path d={path('raw')} fill="none" stroke="var(--sub)" strokeWidth="2" />
-        <path d={path('learned')} fill="none" stroke="var(--accent)" strokeWidth="3" />
-      </svg>
-      <div className="muted" style={{ fontSize: 12, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-        <span><b style={{ color: 'var(--accent)' }}>━</b> with memory</span><span>━ no memory</span><span>┄ coin flip (0.250)</span>
-      </div>
-      <p style={{ margin: '12px 0 0', fontSize: 14 }}>
-        <b>Honest read:</b> scoring is close to a coin flip, and the memory only helps a little. Its one lesson, shrinking its forecasts by {b.shrink}, makes it humble enough to edge past the coin flip. Right on {Math.round(b.test.hitLearned * 100)}% of matches.
-      </p>
-      <p className="muted" style={{ margin: '8px 0 0', fontSize: 12 }}>Data: ESPN public game log, {data.log.matches} matches, {data.log.from} to {data.log.to}. The log is incomplete, so it is used for scoring rates only.</p>
     </div>
   );
 }

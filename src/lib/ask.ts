@@ -1,5 +1,5 @@
 import 'server-only';
-import { AL_NASSR_GOALS, CAREER_GOALS, ERAS, MOMENTS, TARGET } from './data';
+import { AL_NASSR_GOALS, CAREER_GOALS, ERAS, MOMENTS, TARGET, nextFixture } from './data';
 import { fanNamespace, recall } from './memory';
 import { MATCHES, forecast1000 } from './oracle';
 import { liveOracle } from './oracle-live';
@@ -62,13 +62,13 @@ export async function ask(q: string, fanId: string): Promise<Answer> {
   // the next call
   if (/(oracle|predict|tonight|next match|will he score|call)/.test(n) && !/\bmy\b/.test(n)) {
     const o = await liveOracle();
-    return { kind: 'oracle', sources: [LOG, o.fromMemory ? `Oracle lesson recalled from Walrus (${o.source?.asof})` : 'Raw forecast (memory unreachable)'], answer: `${Math.round(o.p * 100)}% chance he scores in his next match, so ${Math.abs(o.p - 0.5) < 0.05 ? "it's a toss-up" : o.call.toLowerCase()}. ${o.reasons.join(' ')} ${o.fromMemory ? `I pulled my raw ${Math.round(o.raw * 100)}% toward 50/50 because my past forecasts were overconfident.` : ''}`.trim() };
+    return { kind: 'oracle', sources: [LOG, o.fromMemory ? `Oracle lesson recalled from Walrus (${o.source?.asof})` : 'Raw forecast (memory unreachable)'], answer: `Next: ${nextFixture().home.name} vs ${nextFixture().away.name}, ${nextFixture().comp}, ${new Date(nextFixture().kickoff).toUTCString().slice(0, 22)} UTC. ${Math.round(o.p * 100)}% chance he scores, so ${Math.abs(o.p - 0.5) < 0.05 ? "it's a toss-up" : o.call.toLowerCase()}. ${o.reasons.join(' ')} ${o.fromMemory ? `I pulled my raw ${Math.round(o.raw * 100)}% toward 50/50 because my past forecasts were overconfident.` : ''}`.trim() };
   }
 
   // career totals
   if (/(how many|total|goals for|club|career)/.test(n) && !/\b(my|i)\b/.test(n)) {
     const lines = ERAS.map((e) => `${e.club} ${e.goals}${e.counting ? '+' : ''}`).join(', ');
-    return { kind: 'career', sources: ['Career totals', 'ESPN goal tracker (985)'], answer: `${CAREER_GOALS} official career goals: ${lines}. Al Nassr is still counting (${AL_NASSR_GOALS}+); it is his career total minus the other shirts. He needs ${TARGET - CAREER_GOALS} more for 1,000.` };
+    return { kind: 'career', sources: ['Career totals', 'ESPN goal tracker (985)'], answer: `${CAREER_GOALS} official career goals: ${lines}. Portugal is final: he retired from international football on 5 Nov 2026. Al Nassr is still counting (${AL_NASSR_GOALS}+); it is his career total minus the other shirts. He needs ${TARGET - CAREER_GOALS} more for 1,000.` };
   }
 
   // form

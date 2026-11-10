@@ -5,7 +5,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useFan } from '@/components/Fan';
 import { Reactions, type Taste } from '@/components/Reactions';
 import { OracleCard, useOracle } from '@/components/Oracle';
-import { CAREER_GOALS, MOMENTS, NEXT_MATCH, TARGET } from '@/lib/data';
+import { CAREER_GOALS, MOMENTS, TARGET, opponentOf } from '@/lib/data';
+import { MatchTicket, useNextFixture } from '@/components/Match';
 import { THEMES } from '@/lib/themes';
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
   const [n, setN] = useState(CAREER_GOALS - 45);
   const [taste, setTaste] = useState<Taste | null>(null);
   const oracle = useOracle();
+  const f = useNextFixture();
 
   useEffect(() => {
     if (n >= CAREER_GOALS) return;
@@ -77,21 +79,13 @@ export default function Home() {
       </div>
 
       <section className="wrap split" style={{ marginTop: 18 }}>
-        <div className="card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
-            <span className="eyebrow">Next match</span>
-            <span className="eyebrow" style={{ color: 'var(--accent2)' }}>Calls lock at kickoff</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginTop: 12 }}>
-            <span className="display" style={{ fontSize: 'clamp(26px,4vw,48px)' }}>{NEXT_MATCH.home.toUpperCase()}</span>
-            <span className="muted" style={{ fontWeight: 800 }}>vs</span>
-            <span className="display muted" style={{ fontSize: 'clamp(26px,4vw,48px)' }}>{NEXT_MATCH.away?.toUpperCase() ?? 'TBC'}</span>
-          </div>
-          <p className="muted" style={{ margin: '8px 0 0' }}>{NEXT_MATCH.kickoff ? new Date(NEXT_MATCH.kickoff).toUTCString() : 'Fixture confirmed after the international break.'}</p>
-          <Link className="btn" href="/call" style={{ marginTop: 14, width: '100%' }}>Make your call</Link>
+        <div className="home-match">
+          <div className="section-head"><h2 className="display">His next match</h2><span className="kicker">Goal {CAREER_GOALS + 1} could come here</span></div>
+          <MatchTicket f={f} />
+          <Link className="btn wide" href="/call">Will he score? Make your call</Link>
         </div>
         <div style={{ display: 'grid', gap: 14 }}>
-          <OracleCard data={oracle.data} error={oracle.error} />
+          <OracleCard data={oracle.data} error={oracle.error} opponent={opponentOf(f).name} />
           <div className="card">
             <div className="eyebrow">Your Ronaldo</div>
             <div className="display" style={{ fontSize: 26, lineHeight: 1.05, marginTop: 8, color: 'var(--accent)' }}>{taste?.profile ?? 'React to a moment to start.'}</div>
@@ -127,6 +121,7 @@ export default function Home() {
             ['/ask', 'Ask El Bicho', 'Ask about any goal, his form, or your own memories.'],
             ['/wall', 'The 1,000 Wall', 'Leave him a message. It opens when he scores goal 1,000.'],
             ['/crowd', 'What fans called', 'See how the crowd thinks he scores next.'],
+            ['/road', 'Goal quiz', 'Ten questions on his goals. How many can you get?'],
             ['/welcome', 'Teach it your Ronaldo', '30 seconds. El Bicho remembers it.'],
             ['/you', 'You', 'Your rank, your taste, your calls and your share cards.'],
           ].map(([href, t, d]) => (

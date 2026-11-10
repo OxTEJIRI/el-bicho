@@ -3,6 +3,7 @@ import { Anton, Inter } from 'next/font/google';
 import Link from 'next/link';
 import './globals.css';
 import './ui.css';
+import './v3.css';
 import { FanProvider } from '@/components/Fan';
 import { BottomNav, TopBar } from '@/components/Chrome';
 

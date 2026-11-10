@@ -29,6 +29,7 @@ function Reel({ m, active, onActive, onBroken, soundOn, setSoundOn, setTaste, se
   const player = useRef<any>(null);
   const [playing, setPlaying] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [autoMuted, setAutoMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [picked, setPicked] = useState<Record<string, boolean>>({});
   const [busy, setBusy] = useState(false);
@@ -50,7 +51,7 @@ function Reel({ m, active, onActive, onBroken, soundOn, setSoundOn, setTaste, se
   useEffect(() => {
     if (!active) {
       try { player.current?.destroy(); } catch { /* already gone */ }
-      player.current = null; setPlaying(false); setPaused(false); setProgress(0);
+      player.current = null; setPlaying(false); setPaused(false); setProgress(0); setAutoMuted(false);
       return;
     }
     let dead = false;
@@ -63,7 +64,16 @@ function Reel({ m, active, onActive, onBroken, soundOn, setSoundOn, setTaste, se
         width: '100%', height: '100%', videoId: m.yt,
         playerVars: { autoplay: 1, mute: soundOn ? 0 : 1, controls: 0, playsinline: 1, rel: 0, modestbranding: 1, loop: 1, playlist: m.yt, iv_load_policy: 3, fs: 0, disablekb: 1 },
         events: {
-          onReady: (e: any) => { try { soundOn ? e.target.unMute() : e.target.mute(); e.target.playVideo(); } catch { /* ignore */ } },
+          onReady: (e: any) => {
+            try { soundOn ? e.target.unMute() : e.target.mute(); e.target.playVideo(); } catch { /* ignore */ }
+            // browsers block autoplay with sound until the visitor has tapped the page: fall back to muted, and the first tap unmutes
+            setTimeout(() => {
+              try {
+                if (dead || !soundOn) return;
+                if (e.target.getPlayerState() !== 1) { e.target.mute(); e.target.playVideo(); setAutoMuted(true); }
+              } catch { /* ignore */ }
+            }, 1800);
+          },
           onStateChange: (e: any) => { if (e.data === 1) { setPlaying(true); setPaused(false); } if (e.data === 2) setPaused(true); },
           onError: () => onBroken(m.id), // embedding off, removed or region-blocked: skip it
         },
@@ -84,7 +94,8 @@ function Reel({ m, active, onActive, onBroken, soundOn, setSoundOn, setTaste, se
   }, [active]);
 
   function tapVideo() {
-    if (!soundOn) { setSoundOn(true); return; } // the first tap turns the sound on
+    if (autoMuted) { try { player.current?.unMute(); player.current?.playVideo(); } catch { /* ignore */ } setAutoMuted(false); return; }
+    if (!soundOn) { setSoundOn(true); return; } // a tap turns the sound back on
     try { paused ? player.current?.playVideo() : player.current?.pauseVideo(); } catch { /* ignore */ }
   }
 
@@ -125,7 +136,7 @@ function Reel({ m, active, onActive, onBroken, soundOn, setSoundOn, setTaste, se
       {/* a plain layer over the player: taps play, pause and unmute, and vertical swipes still scroll the feed */}
       <button className="reel-tap" onClick={tapVideo} aria-label={paused ? 'Play' : soundOn ? 'Pause' : 'Turn the sound on'}>
         {paused && <span className="reel-pauseicon" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg></span>}
-        {active && playing && !soundOn && <span className="reel-soundhint">TAP FOR SOUND</span>}
+        {active && playing && (!soundOn || autoMuted) && <span className="reel-soundhint">TAP FOR SOUND</span>}
       </button>
 
       <div className="reel-shade" />
@@ -170,7 +181,7 @@ export default function RelivePage() {
   const [filter, setFilter] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [broken, setBroken] = useState<string[]>([]);
-  const [soundOn, setSoundOn] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
   const [taste, setTaste] = useState<Taste | null>(null);
   const [status, setStatus] = useState('Tap a reaction. Every one teaches El Bicho your taste.');
   const feed = useRef<HTMLDivElement>(null);
